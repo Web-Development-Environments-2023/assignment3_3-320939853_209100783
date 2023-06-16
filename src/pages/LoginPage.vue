@@ -73,7 +73,7 @@ export default {
         username: "",
         password: "",
         submitError: undefined
-      }
+      },
     };
   },
   validations: {
@@ -94,19 +94,21 @@ export default {
       // return true;
     },
     async getUserFavorites(userId){
-      console.log("asdasdsadasdsadsadasdasds");
       const response = await this.axios.get(
           this.$root.store.store_state.server_domain +`users/favoriterecipes/${userId}`,
       );
-      // console.log(JSON.parse(response));
-      // console.log(JSON.parse(JSON.stringify(response)));
       return response;
+    },
+    CleanObserved(data){
+      let ObservedData = data;
+      console.log(data);
+      let CleanDataJson = JSON.parse(JSON.stringify(ObservedData))
+      console.log(CleanDataJson);
+      return CleanDataJson;
     },
     async Login() {
       try {
-        
         const response = await this.axios.post(
-
           this.$root.store.store_state.server_domain +"Login/",
           {
             username: this.form.username,
@@ -116,12 +118,12 @@ export default {
         );
         // this.$root.loggedIn = true;
         console.log(response);
-        const response2 = await this.axios.get(
-          this.$root.store.store_state.server_domain +`users/favoriterecipes/${response.data.session.user_id}`,
-        );
         this.$root.store.login(this.form.username,response.data.session.user_id);
-        this.$root.store.userFavorites = response2
-        console.log(this.$root.store.userFavorites);
+        let response2 = await this.getUserFavorites(response.data.session.user_id);
+        //Assignment
+        this.$root.store.userFavorites = response2.data;
+        //Stringing
+        let cleanData = this.CleanObserved(this.$root.store.userFavorites);
         this.$router.push("/");
       } catch (err) {
         console.log(err.response);
