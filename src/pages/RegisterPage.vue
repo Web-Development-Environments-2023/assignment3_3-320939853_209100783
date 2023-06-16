@@ -120,7 +120,7 @@
 </template>
 
 <script>
-import countries from "../assets/countries";
+import countries from "../assets/consts";
 import {
   required,
   minLength,

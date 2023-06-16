@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueAxios from "vue-axios";
 import axios from "axios";
-
+import { state as store_state ,actions as store_actions} from "./store";
 import routes from "./routes";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -10,6 +10,8 @@ const router = new VueRouter({
   routes,
 });
 
+
+console.log(Vue.prototype.$store)
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
@@ -42,6 +44,7 @@ Vue.use(Vuelidate);
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    config.withCredentials=true;
     return config;
   },
   function(error) {
@@ -67,7 +70,8 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
-  server_domain: process.env.HOST_URL,
+  store_state: store_state,
+  store_actions: store_actions,
   username: localStorage.username,
   login(username) {
     localStorage.setItem("username", username);
@@ -80,7 +84,6 @@ const shared_data = {
     this.username = undefined;
   },
 };
-console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 
 new Vue({
