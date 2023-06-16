@@ -1,10 +1,8 @@
 <template>
-  <div class="container">
+  <div id="searchcont" class="container">
     <h1 class="title">Search Page</h1>
-    <SearchBox @clicked="onSearchClicked">
-
-    </SearchBox>
-    <RecipePreviewList title="Searched Recipes" :endpoint="ednpointSearch" v-if="ednpointSearch"></RecipePreviewList>
+    <SearchBox @clicked="onSearchClicked"></SearchBox>
+    <RecipePreviewList id="searchList" title="Searched Recipes" :endpoint="ednpointSearch" v-if="ednpointSearch"></RecipePreviewList>
     
   </div>
 </template>
@@ -39,5 +37,13 @@ export default {
 </script>
 
 <style>
-
+#searchList{
+  widows: 100%;
+  height: 100%;
+  margin: auto;
+}
+#searchcont{
+  width: 100%;
+  height: 100%;
+}
 </style>

@@ -1,4 +1,4 @@
-export const countries = createObjectsFromArray([
+export const countriess = createObjectsFromArray([
   "Afghanistan",
   "Åland Islands",
   "Albania",

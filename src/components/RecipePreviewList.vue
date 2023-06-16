@@ -4,11 +4,11 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
-      </b-col>
-    </b-row>
+    <b-card-group deck class="deck">
+        <b-card deck v-for="r in recipes" :key="r.id">
+          <RecipePreview :recipe="r" />
+        </b-card>
+    </b-card-group>
   </b-container>
 </template>
 
@@ -57,6 +57,11 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  min-height: 400px;
+  width: 100%;
+  height: 100%;
+}
+.deck{
+  width: 100%;
+  height: 100%;
 }
 </style>

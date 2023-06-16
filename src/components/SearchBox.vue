@@ -106,7 +106,7 @@ export default {
          dish_choocie: null,
          numbersOptions:{
             default:5,
-            options:[{text:5,value:5},{text:5,value:5},{text:10,value:10},{text:15,value:15}],
+            options:[{text:5,value:5},{text:10,value:10},{text:15,value:15}],
          }
       
       

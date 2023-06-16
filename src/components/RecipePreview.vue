@@ -2,50 +2,121 @@
   <router-link
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
     class="recipe-preview">
-    <b-card
-    :title="recipe.name"
-    :img-src="recipe.image"
-    img-alt="Image"
-    img-top
-    tag="article"
-    style="max-width: 20rem;"
-    class="mb-2">
-      <b-card-text>
-        <ul class="recipe-overview">
-          <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
-          <li v-else>Unkown Time</li>
-          <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
-          <li v-else>Unkown Portions</li>
-        </ul>
-      </b-card-text>
+      <b-card v-if="!isWached"
+      :title="recipe.name"
+      :img-src="recipe.image"
+      img-alt="Image"
+      img-top
+      tag="article"
+      style="max-width: 20rem;"
+      class="mb-2 enlarge-on-hover"
+      border-variant="primary">
+        <b-card-text>
+          <ul class="recipe-overview">
 
-    </b-card>
+            <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
+            <li v-else>Unkown Time</li>
+
+            <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
+            <li v-else>Unkown Portions</li>
+
+            <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
+              <img src="../assets/Veg-logo.png" alt="Image">
+            </li>
+            <li v-else class="list-item-with-image">Non Vegan
+                <img src="../assets/non-Vegan-logo.png" alt="Image" >
+            </li>
+
+            <li v-if="recipe.isGfree" class="list-item-with-image">Gluten free
+              <img src="../assets/G-FREE.jpg" alt="Image" >
+            </li>
+            <li v-else class="list-item-with-image">Not-Gluten free
+              <img src="../assets/NON-G-FREE.jpg" alt="Image" >
+            </li>
+
+          </ul>
+        </b-card-text>
+        <!-- TODO IMPLEMENT THE ENPOINT TO ASK FOR FAVORITES -->
+        <b-button variant="outline-primary" v-if="!getIsFavorits()" @click="addToFavorits">Add To Favorites</b-button>
+        <!-- TODO UNMARK THIS AFTER <b-button variant="outline-primary" v-else>Remove From Favorites</b-button> -->
+      </b-card>
+
+      <b-card v-else
+      :title="recipe.name"
+      :img-src="recipe.image"
+      img-alt="Image"
+      img-top
+      tag="article"
+      style="max-width: 20rem;"
+      class="mb-2 enlarge-on-hover"
+      border-variant="dark">
+        <b-card-text>
+          <ul class="recipe-overview">
+
+            <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
+            <li v-else>Unkown Time</li>
+
+            <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
+            <li v-else>Unkown Portions</li>
+
+            <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
+              <img src="../assets/Veg-logo.png" alt="Image">
+            </li>
+            <li v-else class="list-item-with-image">Non Vegan
+                <img src="../assets/non-Vegan-logo.png" alt="Image" >
+            </li>
+
+            <li v-if="recipe.isGfree" class="list-item-with-image">Gluten free
+              <img src="../assets/G-FREE.jpg" alt="Image" >
+            </li>
+            <li v-else class="list-item-with-image">Not-Gluten free
+              <img src="../assets/NON-G-FREE.jpg" alt="Image" >
+            </li>
+
+          </ul>
+        </b-card-text>
+        <!-- TODO IMPLEMENT THE ENPOINT TO ASK FOR FAVORITES -->
+        <b-button variant="outline-primary" v-if="!getIsFavorits()" @click="addToFavorits">Add To Favorites</b-button>
+        <!-- TODO UNMARK THIS AFTER <b-button variant="outline-primary" v-else>Remove From Favorites</b-button> -->
+      </b-card>
   </router-link>
 </template>
 
 <script>
 export default {
   mounted() {
-    // try{
-    //   this.axios.get(this.recipe.image).then((i) => {
-    //     this.image_load = true;
-    //   });
-    // }
-    // catch{
-    //   this.image_load = false;
-    // }
+    this.isWached = this.getIsWached();
   },
   data() {
     return {
-      image_load: false
+      image_load: false,
+      isFav:false,
+      isWached:false,
     };
   },
   props: {
     recipe: {
       type: Object,
       required: true
-    }
+    },
+  },
+  methods: {
+    addToFavorits(){
+      /**@TODO Implement this part */
+    },
+    getIsFavorits(){
+      /**@TODO Implement this part */
+      return false;
+    },
+    getIsWached(){
+      /** @TODO Implement this part */
+      return false;
+    },
+  },
+  computed:{
+   
 
+  },
     // eitan melech
     // hh
 
@@ -72,12 +143,28 @@ export default {
     //     return undefined;
     //   }
     // }
-  }
+  
 };
 </script>
 
 <style scoped>
-.recipe-preview {
+.enlarge-on-hover {
+      transition: transform 0.3s; /* Add smooth transition effect */
+}
+.enlarge-on-hover:hover {
+      transform: scale(1.07); /* Increase the size by 20% */
+}
+.list-item-with-image {
+    list-style-type: none; /* Remove default list item bullet */
+    display: flex; /* Use flexbox to align items horizontally */
+    align-items: left; /* Center align items vertically */
+  }
+.list-item-with-image img {
+    margin-right: 10px; /* Add some spacing between the image and text */
+    margin-left: 10px;
+    height: 20px; /* Adjust the height of the image as needed */
+  }
+/* .recipe-preview {
   display: inline-block;
   width: 90%;
   height: 100%;
@@ -150,5 +237,5 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
-}
+} */
 </style>

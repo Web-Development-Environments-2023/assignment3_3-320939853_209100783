@@ -6,14 +6,14 @@
         id="input-group-username"
         label-cols-sm="3"
         label="Username:"
-        label-for="username"
-      >
+        label-for="username">
         <b-form-input
           id="username"
           v-model="$v.form.username.$model"
           type="text"
-          :state="validateState('username')"
-        ></b-form-input>
+          placeholder="John Doe"
+          :state="validateState('username')">
+        </b-form-input>
         <b-form-invalid-feedback v-if="!$v.form.username.required">
           Username is required
         </b-form-invalid-feedback>
@@ -33,8 +33,8 @@
       >
         <b-form-select
           id="country"
-          v-model="$v.form.country.$model"
-          :options="countries"
+          v-model="form.countries_chooice"
+          :options="form.countries"
           :state="validateState('country')"
         ></b-form-select>
         <b-form-invalid-feedback>
@@ -52,6 +52,7 @@
           id="password"
           type="password"
           v-model="$v.form.password.$model"
+          placeholder="abcd1234"
           :state="validateState('password')"
         ></b-form-input>
         <b-form-invalid-feedback v-if="!$v.form.password.required">
@@ -120,7 +121,7 @@
 </template>
 
 <script>
-import countries from "../assets/consts";
+import {countriess} from "../assets/consts.js";
 import {
   required,
   minLength,
@@ -135,16 +136,16 @@ export default {
   data() {
     return {
       form: {
+        countries:countriess,
+        countries_chooice: "Israel",
         username: "",
         firstName: "",
         lastName: "",
-        country: null,
         password: "",
         confirmedPassword: "",
         email: "",
         submitError: undefined
       },
-      countries: [{ value: null, text: "", disabled: true }],
       errors: [],
       validated: false
     };
@@ -171,7 +172,10 @@ export default {
   },
   mounted() {
     // console.log("mounted");
-    this.countries.push(...countries);
+    // this.countries.push(...countries);
+    // this.countries_chooice = "Israel";
+    
+    // console.log(this.countries)
     // console.log($v);
   },
   methods: {
