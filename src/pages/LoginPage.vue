@@ -93,25 +93,35 @@ export default {
       return $dirty ? !$error : null;
       // return true;
     },
+    async getUserFavorites(userId){
+      console.log("asdasdsadasdsadsadasdasds");
+      const response = await this.axios.get(
+          this.$root.store.store_state.server_domain +`users/favoriterecipes/${userId}`,
+      );
+      // console.log(JSON.parse(response));
+      // console.log(JSON.parse(JSON.stringify(response)));
+      return response;
+    },
     async Login() {
       try {
         
         const response = await this.axios.post(
-          // "https://test-for-3-2.herokuapp.com/user/Login",
-          this.$root.store.store_state.server_domain +"Login/",
-          
-          // "http://132.72.65.211:80/Login",
-          // "http://132.73.84.100:80/Login",
-          //EITAN HOMO
 
+          this.$root.store.store_state.server_domain +"Login/",
           {
             username: this.form.username,
             password: this.form.password
           },
+
         );
         // this.$root.loggedIn = true;
         console.log(response);
-        this.$root.store.login(this.form.username);
+        const response2 = await this.axios.get(
+          this.$root.store.store_state.server_domain +`users/favoriterecipes/${response.data.session.user_id}`,
+        );
+        this.$root.store.login(this.form.username,response.data.session.user_id);
+        this.$root.store.userFavorites = response2
+        console.log(this.$root.store.userFavorites);
         this.$router.push("/");
       } catch (err) {
         console.log(err.response);

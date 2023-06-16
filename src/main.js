@@ -73,10 +73,19 @@ const shared_data = {
   store_state: store_state,
   store_actions: store_actions,
   username: localStorage.username,
-  login(username) {
+  userFavorites: [],
+  userPersonal: [],
+  userFamily: [],
+  userVisited: [],
+  userLiked: [],
+  login(username,userId) {
     localStorage.setItem("username", username);
     this.username = username;
     console.log("login", this.username);
+    console.log(userId);
+    // console.log(this.$root.store);
+    // console.log(this.$root.store.store_state);
+    // console.log(this.userFavorites);
   },
   logout() {
     console.log("logout");

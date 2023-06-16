@@ -8,10 +8,15 @@ const state = {
 };
 
 const actions = {
-    cwts:(item) => {
-        state.temp = item;
-        console.log("hey");
-    },
+    getUserFavorites(userId){
+    // console.log(state.server_domain);
+    // const response = await this.axios.get(
+    //     state.server_domain +`user/favoriterecipes/${userId}`,
+        
+    // );
+    console.log("sdasdsdasdsadasdasdsada");
+    return 1;
+   },
 
 };
 
