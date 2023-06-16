@@ -1,29 +1,39 @@
 <template>
   <router-link
     :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
-  >
-    <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
-    </div>
-    <div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
-      </div>
-      <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
-      </ul>
-    </div>
+    class="recipe-preview">
+    <b-card
+    :title="recipe.name"
+    :img-src="recipe.image"
+    img-alt="Image"
+    img-top
+    tag="article"
+    style="max-width: 20rem;"
+    class="mb-2">
+      <b-card-text>
+        <ul class="recipe-overview">
+          <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
+          <li v-else>Unkown Time</li>
+          <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
+          <li v-else>Unkown Portions</li>
+        </ul>
+      </b-card-text>
+
+    </b-card>
   </router-link>
 </template>
 
 <script>
 export default {
   mounted() {
-    this.axios.get(this.recipe.image).then((i) => {
-      this.image_load = true;
-    });
+    // try{
+    //   this.axios.get(this.recipe.image).then((i) => {
+    //     this.image_load = true;
+    //   });
+    // }
+    // catch{
+    //   this.image_load = false;
+    // }
   },
   data() {
     return {
@@ -80,7 +90,7 @@ export default {
   position: relative;
 }
 
-.recipe-preview .recipe-body .recipe-image {
+.recipe-preview .recipe-body  {
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;

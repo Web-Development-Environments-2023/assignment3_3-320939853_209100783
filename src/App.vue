@@ -13,7 +13,7 @@
         {{ $root.store.username }}: <button @click="Logout">Logout</button>|
       </span>
     </div>
-    <router-view />
+    <router-view></router-view >
   </div>
 </template>
 

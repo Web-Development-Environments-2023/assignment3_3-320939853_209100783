@@ -1,10 +1,9 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" />
+    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" endpoint="recipes/randomrecipes?number=1"/>
     <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>
-    {{ !$root.store.username }}
-    <RecipePreviewList
+    <!-- <RecipePreviewList v-if="$root.store.username"
       title="Last Viewed Recipes"
       :class="{
         RandomRecipes: true,
@@ -12,7 +11,11 @@
         center: true
       }"
       disabled
-    ></RecipePreviewList>
+      endpoint="users/visitedRecipes?limit=3"
+    ></RecipePreviewList> -->
+
+
+    
     <!-- <div
       style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
     >
@@ -42,4 +45,8 @@ export default {
   pointer-events: none;
   cursor: default;
 }
+// div#randomrecipes{
+//   width: 10%;
+//   height: 15%;
+// }
 </style>

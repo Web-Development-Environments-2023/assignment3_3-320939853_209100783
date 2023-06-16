@@ -88,26 +88,28 @@ export default {
   },
   methods: {
     validateState(param) {
+      
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
+      // return true;
     },
     async Login() {
       try {
         
         const response = await this.axios.post(
           // "https://test-for-3-2.herokuapp.com/user/Login",
-          this.$root.store.server_domain +"/Login",
+          this.$root.store.store_state.server_domain +"Login/",
+          
           // "http://132.72.65.211:80/Login",
           // "http://132.73.84.100:80/Login",
 
           {
             username: this.form.username,
             password: this.form.password
-          }
+          },
         );
-        // console.log(response);
         // this.$root.loggedIn = true;
-        console.log(this.$root.store.login);
+        console.log(response);
         this.$root.store.login(this.form.username);
         this.$router.push("/");
       } catch (err) {
@@ -116,17 +118,20 @@ export default {
       }
     },
     onLogin() {
-      // console.log("login method called");
+      console.log("login method called");
       this.form.submitError = undefined;
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("login method go");
+      console.log("login method go");
 
       this.Login();
     }
   }
+  // created() {
+  //   await
+  // },
 };
 </script>
 <style lang="scss" scoped>
