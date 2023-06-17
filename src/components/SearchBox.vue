@@ -115,7 +115,7 @@ export default {
    methods: {
       async searchRecipe(){
          try {
-            const url =  `users/searchrecipe/${this.dish_choocie}?cuisine=${this.cusinies_chooice}&diet=${this.diet_chooice}&intolerance=${this.intolerancess_choocie}&number=${this.numbersOptions.default}`;
+            const url =  `recipes/searchrecipe/${this.dish_choocie}?cuisine=${this.cusinies_chooice}&diet=${this.diet_chooice}&intolerance=${this.intolerancess_choocie}&number=${this.numbersOptions.default}`;
             this.$emit('clicked', url);
          } catch (error) {
             console.log(error);
