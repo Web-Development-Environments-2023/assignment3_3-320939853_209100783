@@ -6,7 +6,7 @@
     </h3>
     <b-card-group deck class="deck">
         <b-card deck v-for="r in recipes" :key="r.id">
-          <RecipePreview :recipe="r" />
+          <RecipePreview :recipe="r" :data="data" />
         </b-card>
     </b-card-group>
   </b-container>
@@ -36,20 +36,49 @@ export default {
       type: Object,
       required : true,
     },
+    
   },
   data() {
     return {
       recipes: [],
     };
   },
-  mounted() {
-    this.endpoints = this.endpoint;
-    this.updateRecipes();
-  },
-  // updated() {
-  //   // this.updateRecipes();
+  // mounted() {
+  //   this.updateRecipes();
   // },
   methods: {
+    addSourceToRecipe(recpie,source){
+      recpie.source = source;
+      return recpie;
+    },
+    checkIfInFav(recipe){
+      if(!this.$root.store.username){
+          let re = recipe;
+          re.isFav = false;
+          return re;
+        }
+      console.log(recipe);
+      // console.log(recipe.id);
+      let recpiesServer = this.data.userFavorites.Server;
+      let recpiesApi = this.data.userFavorites.API;
+      recpiesServer.forEach((element)=>{
+        
+        if (element == recipe.id) {
+            recipe.isFav = true;
+            return recipe;
+        }
+      });
+      recpiesApi.forEach((element)=>{
+        if (element == recipe.id) {
+            recipe.isFav = true;
+            return recipe;
+            
+        }
+      });
+      let re = recipe;
+      // re.isFav = false;
+      return re;
+    },
     async updateRecipes() {
       if(this.purpose == 'SIMPLE'){
         try {
@@ -59,7 +88,11 @@ export default {
 
           const recipes = response.data;
           this.recipes = [];
-          recipes.forEach((elem) => this.recipes.push(elem));
+          recipes.forEach((elem) => {
+            elem = this.addSourceToRecipe(elem,"API");
+            elem = this.checkIfInFav(elem);
+            this.recipes.push(elem)
+          });
         } catch (error) {
           console.log(error);
         }
@@ -74,7 +107,10 @@ export default {
             const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint
             + `${element}?src=Server`,);
-            respoces.push(response);
+            let dataElement = response.data;
+            dataElement.isFav = true;
+            dataElement = this.addSourceToRecipe(dataElement,"Server");
+            respoces.push(dataElement);
           }
 
           for (let index = 0; index < apiIds.length; index++) {
@@ -82,7 +118,10 @@ export default {
             const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint
             + `${element}?src=API`,);
-            respoces.push(response);
+            let dataElement = response.data;
+            dataElement.isFav = true;
+            dataElement = this.addSourceToRecipe(dataElement,"API");
+            respoces.push(dataElement);
           }
 
           this.recipes = respoces;
@@ -93,6 +132,14 @@ export default {
 
       }
     }
+  },
+  watch: {
+    endpoint: {
+      immediate: true,
+      handler() {
+        this.updateRecipes();
+      },
+    },
   },
 
 };

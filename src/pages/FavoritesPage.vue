@@ -1,7 +1,13 @@
 <template>
    <div id="favorites">
       <h1>Hello Favorites</h1>
-      <RecipePreviewList></RecipePreviewList>
+      <RecipePreviewList
+         id="favoritesList" 
+         title="Favorites Recipes" 
+         :endpoint="ednpointSearch"
+         purpose="FAV"
+         :data="data"
+      ></RecipePreviewList>
   </div>
 </template>
 
@@ -18,16 +24,11 @@ export default {
 
    data() {
     return {
-      ednpointSearch: "",
+      ednpointSearch: "recipes/getrecipe/",
       };
    },
-   mounted() {
-      this.getFavorites();
-   },
    methods: {
-    getFavorites(){
-      
-    }
+   
    },
    props:{
       data: {

@@ -1,17 +1,19 @@
 <template>
-  <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview">
-      <b-card v-if="!isWached"
-      :title="recipe.name"
-      :img-src="recipe.image"
-      img-alt="Image"
-      img-top
-      tag="article"
-      style="max-width: 20rem;"
-      class="mb-2 enlarge-on-hover"
-      border-variant="primary">
+  <div id="previewitem">
+      <b-card v-if="!isWached"  
+        :title="recipe.name"
+        :img-src="recipe.image"
+        img-alt="Image"
+        img-top
+        tag="article"
+        style="max-width: 20rem;"
+        class="mb-2 enlarge-on-hover"
+        border-variant="primary">
         <b-card-text>
+           <router-link
+              :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+              class="recipe-preview">
+            </router-link>
           <ul class="recipe-overview">
 
             <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
@@ -36,9 +38,11 @@
 
           </ul>
         </b-card-text>
-        <!-- TODO IMPLEMENT THE ENPOINT TO ASK FOR FAVORITES -->
-        <b-button variant="outline-primary" v-if="!getIsFavorits()" @click="addToFavorits">Add To Favorites</b-button>
-        <!-- TODO UNMARK THIS AFTER <b-button variant="outline-primary" v-else>Remove From Favorites</b-button> -->
+        <AddToFavoritesBtn
+          :recipe="recipe"
+          :data="data"
+          v-if="this.$root.store.username"
+        ></AddToFavoritesBtn>
       </b-card>
 
       <b-card v-else
@@ -51,6 +55,10 @@
       class="mb-2 enlarge-on-hover"
       border-variant="dark">
         <b-card-text>
+          <router-link
+              :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+              class="recipe-preview">
+          </router-link>
           <ul class="recipe-overview">
 
             <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
@@ -75,15 +83,22 @@
 
           </ul>
         </b-card-text>
-        <!-- TODO IMPLEMENT THE ENPOINT TO ASK FOR FAVORITES -->
-        <b-button variant="outline-primary" v-if="!getIsFavorits()" @click="addToFavorits">Add To Favorites</b-button>
-        <!-- TODO UNMARK THIS AFTER <b-button variant="outline-primary" v-else>Remove From Favorites</b-button> -->
+        <AddToFavoritesBtn
+          :recipe="recipe"
+          :data="data"
+          v-if="this.$root.store.username"
+        ></AddToFavoritesBtn>
       </b-card>
-  </router-link>
+    </div>
 </template>
 
 <script>
+import AddToFavoritesBtn from "./AddToFavorites.vue";
+
 export default {
+  components:{
+    AddToFavoritesBtn,
+  },
   mounted() {
     this.isWached = this.getIsWached();
   },
@@ -98,6 +113,10 @@ export default {
     recipe: {
       type: Object,
       required: true
+    },
+    data: {
+      type: Object,
+      required: true,
     },
   },
   methods: {

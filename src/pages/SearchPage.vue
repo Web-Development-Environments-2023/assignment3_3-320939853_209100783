@@ -30,12 +30,12 @@ export default {
   data() {
     return {
       ednpointSearch: "",
+      flag: true,
     };
   },
   methods: {
     onSearchClicked(value){
-        // this.ednpointSearch = "";
-        this.ednpointSearch = value
+        this.ednpointSearch = value;
     },
   },
   props: {
@@ -44,7 +44,7 @@ export default {
       required : true,
     },
   },
-
+  
 
 }
 </script>
