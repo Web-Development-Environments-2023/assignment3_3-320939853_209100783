@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <HeaderBar id="header"></HeaderBar>
-    <router-view></router-view>
+    <router-view  :data="data"></router-view>
     <FooterBar></FooterBar>
   </div>
 </template>
@@ -16,6 +16,20 @@ export default {
     HeaderBar,
     FooterBar,
   },
+  data() {
+    return {
+      data:{
+        userFavorites: [],
+        userPersonal: [],
+        userFamily: [],
+        userVisited: [],
+        userLiked: [],
+      },
+    }
+  },
+  methods: {
+   
+  },  
 };
 </script>
 

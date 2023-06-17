@@ -2,7 +2,14 @@
   <div id="searchcont" class="container">
     <h1 class="title">Search Page</h1>
     <SearchBox @clicked="onSearchClicked"></SearchBox>
-    <RecipePreviewList id="searchList" title="Searched Recipes" :endpoint="ednpointSearch" v-if="ednpointSearch"></RecipePreviewList>
+    <RecipePreviewList 
+      id="searchList" 
+      title="Searched Recipes" 
+      :endpoint="ednpointSearch"
+      purpose="SIMPLE"
+      :data="data"
+      v-if="ednpointSearch"
+      ></RecipePreviewList>
     
   </div>
 </template>
@@ -27,8 +34,14 @@ export default {
   },
   methods: {
     onSearchClicked(value){
-        
+        // this.ednpointSearch = "";
         this.ednpointSearch = value
+    },
+  },
+  props: {
+    data: {
+      type: Object,
+      required : true,
     },
   },
 

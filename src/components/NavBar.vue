@@ -45,9 +45,18 @@
 
           <b-navbar-nav class="mx-4 my-auto">
             <b-nav-text>
+              <router-link :to="{ name: 'favorites' }" class="text-success">Favorites</router-link>
+            </b-nav-text>
+          </b-navbar-nav>
+
+          <b-navbar-nav class="mx-4 my-auto">
+            <b-nav-text>
                 <b-button variant="success" @click="Logout">Logout</b-button>
             </b-nav-text>
           </b-navbar-nav>
+
+         
+
         </b-collapse>
       </b-navbar>
     </div>

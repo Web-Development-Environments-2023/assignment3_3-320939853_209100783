@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     <h1 class="title">Main Page</h1>
-    <RecipePreviewList title="Randome Recipes" class="RandomRecipes center" endpoint="recipes/randomrecipes?number=3"/>
+    <RecipePreviewList
+      title="Randome Recipes"
+      class="RandomRecipes center" 
+      endpoint="recipes/randomrecipes?number=3"
+      purpose="SIMPLE"
+      :data="data"
+      />
     <router-link v-if="!$root.store.username" to="/login">You need to Login to vue this</router-link>
     <!-- <RecipePreviewList v-if="$root.store.username"
       title="Last Viewed Recipes"
@@ -29,7 +35,13 @@ import RecipePreviewList from "../components/RecipePreviewList";
 export default {
   components: {
     RecipePreviewList
-  }
+  },
+  props:{
+    data: {
+      type: Object,
+      required: true,
+    },
+  },
 };
 </script>
 

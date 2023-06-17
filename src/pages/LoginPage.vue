@@ -101,9 +101,9 @@ export default {
     },
     CleanObserved(data){
       let ObservedData = data;
-      console.log(data);
+      // console.log(data);
       let CleanDataJson = JSON.parse(JSON.stringify(ObservedData))
-      console.log(CleanDataJson);
+      // console.log(CleanDataJson);
       return CleanDataJson;
     },
     async Login() {
@@ -121,7 +121,9 @@ export default {
         this.$root.store.login(this.form.username,response.data.session.user_id);
         let response2 = await this.getUserFavorites(response.data.session.user_id);
         //Assignment
+        this.data.userFavorites = response2.data; 
         this.$root.store.userFavorites = response2.data;
+        console.log(this.data)
         //Stringing
         let cleanData = this.CleanObserved(this.$root.store.userFavorites);
         this.$router.push("/");
@@ -141,10 +143,16 @@ export default {
 
       this.Login();
     }
-  }
+  },
   // created() {
   //   await
   // },
+  props:{
+    data: {
+      type: Object,
+      required: true
+    },
+  }
 };
 </script>
 <style lang="scss" scoped>

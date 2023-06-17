@@ -73,11 +73,6 @@ const shared_data = {
   store_state: store_state,
   store_actions: store_actions,
   username: localStorage.username,
-  userFavorites: [],
-  userPersonal: [],
-  userFamily: [],
-  userVisited: [],
-  userLiked: [],
   login(username,userId) {
     localStorage.setItem("username", username);
     this.username = username;
@@ -92,6 +87,7 @@ const shared_data = {
     localStorage.removeItem("username");
     this.username = undefined;
   },
+  
 };
 // Vue.prototype.$root.store = shared_data;
 
