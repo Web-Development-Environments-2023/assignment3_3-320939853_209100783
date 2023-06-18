@@ -2,10 +2,10 @@
   <div class="container">
     <h1 class="title">Main Page</h1>
     <RecipePreviewList
-      title="Randome Recipes"
+      title="Random Recipes"
       class="RandomRecipes center" 
       endpoint="recipes/randomrecipes?number=3"
-      purpose="SIMPLE"
+      purpose="RANDOM"
       :data="data"
       />
     <router-link v-if="!$root.store.username" to="/login">You need to Login to vue this</router-link>

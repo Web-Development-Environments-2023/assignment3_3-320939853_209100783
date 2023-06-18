@@ -9,6 +9,12 @@
           <RecipePreview :recipe="r" :data="data" />
         </b-card>
     </b-card-group>
+    <b-button variant="outline-primary"
+        style="width:100px;"
+        class="mx-auto w-100"
+        @click="updateRecipes"
+        v-if="purpose === 'RANDOM'"
+    >Refresh Random Recipes</b-button>
   </b-container>
 </template>
 
@@ -96,7 +102,7 @@ export default {
             console.log(error);
         }
       }
-      if(this.purpose == 'SIMPLE'){
+      if(this.purpose == 'SIMPLE' || this.purpose == 'RANDOM'){
         try {
           const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint,
