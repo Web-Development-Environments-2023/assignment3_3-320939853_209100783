@@ -80,6 +80,22 @@ export default {
       return re;
     },
     async updateRecipes() {
+      if(this.purpose == 'FAM')
+      {
+        try {
+            let response = await this.axios.get(this.$root.store.store_state.server_domain + this.endpoint,);
+            let recipes = response.data;
+            this.data.userFamily = recipes.data;
+            this.recipes = [];
+            recipes.data.forEach((elem) => {
+              elem = this.addSourceToRecipe(elem,"Server");
+              elem = this.checkIfInFav(elem);
+              this.recipes.push(elem)
+            });
+          } catch (error) {
+            console.log(error);
+        }
+      }
       if(this.purpose == 'SIMPLE'){
         try {
           const response = await this.axios.get(

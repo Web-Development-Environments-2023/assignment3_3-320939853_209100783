@@ -55,6 +55,11 @@
             </b-nav-text>
           </b-navbar-nav>
 
+          <b-dropdown id="dropdown-1" text="Personal Area" class="m-md-2">
+            <b-dropdown-item :to="{ name: 'favorites' }" class="text-success">Favorite Recipes</b-dropdown-item>
+            <b-dropdown-item :to="{ name: 'family' }" class="text-success">Family Recipes</b-dropdown-item>
+            <b-dropdown-item>Personal Recipes</b-dropdown-item>
+          </b-dropdown>
          
 
         </b-collapse>
