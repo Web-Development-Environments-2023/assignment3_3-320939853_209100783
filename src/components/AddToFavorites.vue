@@ -16,9 +16,6 @@ export default {
       async addToFavorits(){
       
          this.recipe.isFav = true;
-         
-         console.log("ABBABABABABBABAB\n");
-         console.log(this.recipe);
          const response = await this.axios.post(this.$root.store.store_state.server_domain+`users/addFavorite`,
          {
             source: this.recipe.source,

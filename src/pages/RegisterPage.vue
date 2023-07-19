@@ -11,7 +11,7 @@
           id="username"
           v-model="$v.form.username.$model"
           type="text"
-          placeholder="John Doe"
+          placeholder="JohnDoe1"
           :state="validateState('username')">
         </b-form-input>
         <b-form-invalid-feedback v-if="!$v.form.username.required">
@@ -23,6 +23,30 @@
         <b-form-invalid-feedback v-if="!$v.form.username.alpha">
           Username alpha
         </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-firstname"
+        label-cols-sm="3"
+        label="First Name:"
+        label-for="firstname">
+        <b-form-input
+          id="firstname"
+          type="text"
+          placeholder="John">
+        </b-form-input>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-lastname"
+        label-cols-sm="3"
+        label="Last Name:"
+        label-for="lastname">
+        <b-form-input
+          id="lastname"
+          type="text"
+          placeholder="Doe">
+        </b-form-input>
       </b-form-group>
 
       <b-form-group
