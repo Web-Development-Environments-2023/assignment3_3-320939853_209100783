@@ -26,8 +26,10 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  FormRadioPlugin ,
 } from "bootstrap-vue";
 [
+  FormRadioPlugin ,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,

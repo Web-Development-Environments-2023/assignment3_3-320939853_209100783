@@ -19,6 +19,7 @@
     name:"FamilyRecipePage",
     components:{
         RecipePreviewList,
+        
     },
  
     data() {

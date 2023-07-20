@@ -5,8 +5,9 @@
       <slot></slot>
     </h3>
     <b-card-group deck class="deck">
-        <b-card deck v-for="r in recipes" :key="r.id">
-          <RecipePreview :recipe="r" :data="data" />
+
+        <b-card deck v-for="r in sortedArray" :key="r.id" >
+          <RecipePreview :recipe="r" :data="data"></RecipePreview>
         </b-card>
     </b-card-group>
     <b-button variant="outline-primary"
@@ -42,6 +43,11 @@ export default {
       type: Object,
       required : true,
     },
+    sortBy: {
+      type: String,
+      required: false,
+      default: "time"
+    }
     
   },
   data() {
@@ -52,6 +58,17 @@ export default {
   // mounted() {
   //   this.updateRecipes();
   // },
+  computed:{
+    sortedArray() {
+      if (this.sortBy == "time"){
+        console.log(this.sortBy)
+        return [...this.recipes].sort((a, b) => a.Time - b.Time);
+        }
+      else
+        return [...this.recipes].sort((a, b) => a.portions - b.portions);
+    },
+    
+  },
   methods: {
     addSourceToRecipe(recpie,source){
       recpie.source = source;
@@ -103,6 +120,8 @@ export default {
         }
       }
       if(this.purpose == 'SIMPLE' || this.purpose == 'RANDOM'){
+        // if simple -> search then check if recipes are in the storage @eitag-uni
+        
         try {
           const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint,
@@ -115,6 +134,7 @@ export default {
             elem = this.checkIfInFav(elem);
             this.recipes.push(elem)
           });
+          
         } catch (error) {
           console.log(error);
         }
@@ -127,8 +147,8 @@ export default {
           for (let index = 0; index < serverIds.length; index++) {
             const element = serverIds[index];
             const response = await this.axios.get(
-            this.$root.store.store_state.server_domain + this.endpoint
-            + `${element}?src=Server`,);
+                                                    this.$root.store.store_state.server_domain + this.endpoint
+                                                    + `${element}?src=Server`,);
             let dataElement = response.data;
             dataElement.isFav = true;
             dataElement = this.addSourceToRecipe(dataElement,"Server");
@@ -145,9 +165,8 @@ export default {
             dataElement = this.addSourceToRecipe(dataElement,"API");
             respoces.push(dataElement);
           }
-
+          
           this.recipes = respoces;
-
         } catch (error) {
           console.log(error);
         }
@@ -162,6 +181,7 @@ export default {
         this.updateRecipes();
       },
     },
+    
   },
 
 };
