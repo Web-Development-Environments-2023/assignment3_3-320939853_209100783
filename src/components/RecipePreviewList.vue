@@ -4,12 +4,20 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-card-group deck class="deck" >
+    <b-card-group deck class="deck" :key="getRecipesLen">
         
-        <v-card deck v-for="r in sortedArray" :key="r.id" >
+        <div deck v-for="r in sortedArray" :key="r.id" >
           <RecipePreview :recipe="r" :data="data"></RecipePreview>
-        </v-card>
+        </div>
         
+        <div v-if="getRecipesLen" :key="getRecipesLen">
+           <b-card>
+            <b-card-text>
+              No Result Has been found yet
+            </b-card-text>
+            
+          </b-card>
+        </div>
     </b-card-group>
     <b-button variant="outline-primary"
         style="width:100px;"
@@ -65,6 +73,9 @@ export default {
         }
       else
         return [...this.recipes].sort((a, b) => a.portions - b.portions);
+    },
+    getRecipesLen(){
+      return this.recipes.length == 0;
     },
   
   },
