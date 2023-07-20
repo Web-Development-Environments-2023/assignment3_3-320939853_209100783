@@ -2,19 +2,19 @@
   <div id="app">
     <HeaderBar id="header"></HeaderBar>
     <router-view  :data="data"></router-view>
-    <FooterBar></FooterBar>
+    <!-- <FooterBar></FooterBar> -->
   </div>
 </template>
 
 <script>
 import HeaderBar from "../src/components/NavBar.vue";
-import FooterBar from "../src/components/FooterBar.vue";
+// import FooterBar from "../src/components/FooterBar.vue";
 
 export default {
   name: "App",
   components:{
     HeaderBar,
-    FooterBar,
+    // FooterBar,
   },
   data() {
     return {
@@ -46,11 +46,9 @@ export default {
 #header a.router-link-exact-active {
   color: #42b983;
   font-weight: bold;
-  
-
 }
-#footer {
-  position: fixed;
-  bottom: 0;
-}
+// #footer {
+//   position: fixed;
+//   bottom: 0;
+// }
 </style>
