@@ -184,6 +184,22 @@ export default {
 
       }
       else if(this.purpose == 'LASTVISITED'){
+        const response = await this.axios.get(
+            this.$root.store.store_state.server_domain + this.endpoint
+            + "?limit=4",);
+        let lists  = response.data.visitedRecipes
+        let responseses  = []
+        lists.API.forEach((elem) => {
+              elem = this.addSourceToRecipe(elem,"API");
+              elem = this.checkIfInFav(elem);
+              responseses.push(elem)
+        });
+        lists.Server.forEach((elem) => {
+              elem = this.addSourceToRecipe(elem,"Server");
+              elem = this.checkIfInFav(elem);
+              responseses.push(elem)
+        })
+        this.recipes = responseses;
 
       }
     }

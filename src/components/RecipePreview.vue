@@ -1,6 +1,62 @@
 <template>
   <div id="previewitem">
-      <b-card v-if="!isWached"  
+    <router-link
+              :to="{ name: 'recipe', params: { recipeId: recipe.id ,src: recipe.source} }"
+              class="recipe-preview">
+            
+        <b-card v-if="!isWached"  
+          :title="recipe.name"
+          :img-src="recipe.image"
+          img-alt="Image"
+          img-top
+          tag="article"
+          style="max-width: 20rem;"
+          class="mb-2 enlarge-on-hover"
+          border-variant="primary">
+          
+          <b-card-text>
+            <ul class="recipe-overview">
+              <li v-if="recipe.creator">{{ recipe.creator }}</li>
+              <!-- <li v-else>Unkown Time</li> -->
+
+              <li v-if="recipe.When">{{ recipe.When }}</li>
+              <!-- <li v-else>Unkown Time</li> -->
+
+              <!-- LAST ONE - NOT NECESSARY  -->
+              <!-- <li v-if="recipe.origin">{{ recipe.origin }}</li> -->
+              <!-- <li v-else>Unkown Time</li> -->
+
+
+
+              <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
+              <li v-else>Unkown Time</li>
+
+              <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
+              <li v-else>Unkown Portions</li>
+
+              <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
+                <img src="../assets/Veg-logo.png" alt="Image">
+              </li>
+              <li v-else class="list-item-with-image">Non Vegan
+                  <img src="../assets/non-Vegan-logo.png" alt="Image" >
+              </li>
+
+              <li v-if="recipe.isGfree" class="list-item-with-image">Gluten free
+                <img src="../assets/G-FREE.jpg" alt="Image" >
+              </li>
+              <li v-else class="list-item-with-image">Not-Gluten free
+                <img src="../assets/NON-G-FREE.jpg" alt="Image" >
+              </li>
+
+            </ul>
+          </b-card-text>
+          <AddToFavoritesBtn
+            :recipe="recipe"
+            :data="data"
+            v-if="this.$root.store.username"
+          ></AddToFavoritesBtn>
+        </b-card>
+        <b-card v-else
         :title="recipe.name"
         :img-src="recipe.image"
         img-alt="Image"
@@ -8,98 +64,39 @@
         tag="article"
         style="max-width: 20rem;"
         class="mb-2 enlarge-on-hover"
-        border-variant="primary">
-        <b-card-text>
-           <router-link
-              :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-              class="recipe-preview">
-            </router-link>
-          <ul class="recipe-overview">
-            <li v-if="recipe.creator">{{ recipe.creator }}</li>
-            <!-- <li v-else>Unkown Time</li> -->
+        border-variant="dark">
+          <b-card-text>
+            <ul class="recipe-overview">
 
-            <li v-if="recipe.When">{{ recipe.When }}</li>
-            <!-- <li v-else>Unkown Time</li> -->
+              <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
+              <li v-else>Unkown Time</li>
 
-            <!-- LAST ONE - NOT NECESSARY  -->
-            <!-- <li v-if="recipe.origin">{{ recipe.origin }}</li> -->
-            <!-- <li v-else>Unkown Time</li> -->
+              <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
+              <li v-else>Unkown Portions</li>
 
+              <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
+                <img src="../assets/Veg-logo.png" alt="Image">
+              </li>
+              <li v-else class="list-item-with-image">Non Vegan
+                  <img src="../assets/non-Vegan-logo.png" alt="Image" >
+              </li>
 
+              <li v-if="recipe.isGfree" class="list-item-with-image">Gluten free
+                <img src="../assets/G-FREE.jpg" alt="Image" >
+              </li>
+              <li v-else class="list-item-with-image">Not-Gluten free
+                <img src="../assets/NON-G-FREE.jpg" alt="Image" >
+              </li>
 
-            <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
-            <li v-else>Unkown Time</li>
-
-            <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
-            <li v-else>Unkown Portions</li>
-
-            <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
-              <img src="../assets/Veg-logo.png" alt="Image">
-            </li>
-            <li v-else class="list-item-with-image">Non Vegan
-                <img src="../assets/non-Vegan-logo.png" alt="Image" >
-            </li>
-
-            <li v-if="recipe.isGfree" class="list-item-with-image">Gluten free
-              <img src="../assets/G-FREE.jpg" alt="Image" >
-            </li>
-            <li v-else class="list-item-with-image">Not-Gluten free
-              <img src="../assets/NON-G-FREE.jpg" alt="Image" >
-            </li>
-
-          </ul>
-        </b-card-text>
-        <AddToFavoritesBtn
-          :recipe="recipe"
-          :data="data"
-          v-if="this.$root.store.username"
-        ></AddToFavoritesBtn>
-      </b-card>
-
-      <b-card v-else
-      :title="recipe.name"
-      :img-src="recipe.image"
-      img-alt="Image"
-      img-top
-      tag="article"
-      style="max-width: 20rem;"
-      class="mb-2 enlarge-on-hover"
-      border-variant="dark">
-        <b-card-text>
-          <router-link
-              :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-              class="recipe-preview">
-          </router-link>
-          <ul class="recipe-overview">
-
-            <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
-            <li v-else>Unkown Time</li>
-
-            <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
-            <li v-else>Unkown Portions</li>
-
-            <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
-              <img src="../assets/Veg-logo.png" alt="Image">
-            </li>
-            <li v-else class="list-item-with-image">Non Vegan
-                <img src="../assets/non-Vegan-logo.png" alt="Image" >
-            </li>
-
-            <li v-if="recipe.isGfree" class="list-item-with-image">Gluten free
-              <img src="../assets/G-FREE.jpg" alt="Image" >
-            </li>
-            <li v-else class="list-item-with-image">Not-Gluten free
-              <img src="../assets/NON-G-FREE.jpg" alt="Image" >
-            </li>
-
-          </ul>
-        </b-card-text>
-        <AddToFavoritesBtn
-          :recipe="recipe"
-          :data="data"
-          v-if="this.$root.store.username"
-        ></AddToFavoritesBtn>
-      </b-card>
+            </ul>
+          </b-card-text>
+          <AddToFavoritesBtn
+            :recipe="recipe"
+            :data="data"
+            v-if="this.$root.store.username"
+          ></AddToFavoritesBtn>
+        </b-card>
+    </router-link>
     </div>
 </template>
 

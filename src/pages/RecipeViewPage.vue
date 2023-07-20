@@ -1,35 +1,40 @@
 <template>
   <div class="container">
     <div v-if="recipe">
-      <div class="recipe-header mt-3 mb-4">
-        <h1>{{ recipe.title }}</h1>
-        <img :src="recipe.image" class="center" />
-      </div>
+      <!-- <div class="recipe-header mt-3 mb-4"> -->
+        <b-container  class="imageContainer">
+          <b-card>
+            <b-card-header class="centeritem" >
+              {{ recipe.name }}
+            </b-card-header>
+            <b-card-img :src="recipe.image" class="center" img-alt="Card image" ></b-card-img>
+            <b-card-footer class="centeritem">
+              Ready in {{ recipe.Time }} minutes
+            </b-card-footer>
+          </b-card>
+        </b-container>
+      <!-- </div> -->
       <div class="recipe-body">
         <div class="wrapper">
-          <div class="wrapped">
-            <div class="mb-3">
-              <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
-              <div>Likes: {{ recipe.aggregateLikes }} likes</div>
-            </div>
+          <b-card class="wrapped">
             Ingredients:
-            <ul>
-              <li
-                v-for="(r, index) in recipe.extendedIngredients"
+            <b-list-group class="list">
+              <b-list-group-item variant="primary" href="#" class="listitem"
+                v-for="(r, index) in recipe.ingredients"
                 :key="index + '_' + r.id"
               >
-                {{ r.original }}
-              </li>
-            </ul>
-          </div>
-          <div class="wrapped">
+              {{ r.ingredient }} amount {{ r.amount }} type {{ r.type}}
+              </b-list-group-item>
+            </b-list-group>
+          </b-card>
+          <b-card class="wrapped">
             Instructions:
-            <ol>
-              <li v-for="s in recipe._instructions" :key="s.number">
-                {{ s.step }}
-              </li>
-            </ol>
-          </div>
+            <b-list-group class="list">
+              <b-list-group-item v-for="(s, indexx) in recipe.steps" :key="s.stepNumber" variant="primary" href="#"  class="listitem"> 
+                {{indexx+1}}&#41;	&#9;{{ s.stepDesc }}
+              </b-list-group-item>
+            </b-list-group>
+          </b-card>
         </div>
       </div>
       <!-- <pre>
@@ -45,60 +50,44 @@
 export default {
   data() {
     return {
-      recipe: null
+      recipe: null,
+      endpoint:"recipes/getrecipe/",
     };
   },
   async created() {
     try {
+      console.log("hello from page ")
       let response;
       // response = this.$route.params.response;
-
+      if (localStorage.getItem('username')){
+      let r = await this.axios.post(
+          this.$root.store.store_state.server_domain+ "users/visitRecipe/" ,
+          {
+              recipeId:this.$route.params.recipeId,
+              source:this.$route.params.src
+          });
+        console.log(r.data);
+      }
       try {
         response = await this.axios.get(
-          // "https://test-for-3-2.herokuapp.com/recipes/info",
-          this.$root.store.server_domain + "/recipes/info",
-          {
-            params: { id: this.$route.params.recipeId }
-          }
+          this.$root.store.store_state.server_domain+ this.endpoint + 
+          `${this.$route.params.recipeId}`+`?src=${this.$route.params.src}`
+          
         );
+        let _recipe = response.data
+        this.recipe = _recipe;
 
         // console.log("response.status", response.status);
-        if (response.status !== 200) this.$router.replace("/NotFound");
+        if (response.status !== 200) 
+          this.$router.replace("/NotFound");
       } catch (error) {
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");
         return;
       }
 
-      let {
-        analyzedInstructions,
-        instructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title
-      } = response.data.recipe;
 
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
 
-      let _recipe = {
-        instructions,
-        _instructions,
-        analyzedInstructions,
-        extendedIngredients,
-        aggregateLikes,
-        readyInMinutes,
-        image,
-        title
-      };
-
-      this.recipe = _recipe;
     } catch (error) {
       console.log(error);
     }
@@ -112,12 +101,49 @@ export default {
 }
 .wrapped {
   width: 50%;
+  margin: 2%;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  /* transition: box-shadow 0.3s ease; */
+}
+.wrapped:hover {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Increased blur radius for the shadow */
 }
 .center {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
+  height: 2%;
+}
+.list{
+  padding: 2%;
+}
+.listitem:hover{
+   transform: scale(1.05);
+   background-color: antiquewhite;
+}
+
+.listitem{
+  transition: transform 0.3s ease;
+}
+.imageContainer{
+  margin: 2%;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  height: 20%;
+}
+.centeritem{
+  text-align: center;
+  margin-top: 1% ;
+  margin-bottom: 1%;
+
+}
+.container{
+  width: 90%;
+  height: 100%;
 }
 /* .recipe-header{
 
