@@ -33,6 +33,7 @@
         <b-form-input
           id="firstname"
           type="text"
+          v-model="form.firstName"
           placeholder="John">
         </b-form-input>
       </b-form-group>
@@ -45,6 +46,7 @@
         <b-form-input
           id="lastname"
           type="text"
+          v-model="form.lastName"
           placeholder="Doe">
         </b-form-input>
       </b-form-group>
@@ -53,15 +55,9 @@
         id="input-group-country"
         label-cols-sm="3"
         label="Country:"
-        label-for="country"
-      >
-        <b-form-select
-          id="country"
-          v-model="form.countries_chooice"
-          :options="form.countries"
-          :state="validateState('country')"
-        ></b-form-select>
-        <b-form-invalid-feedback>
+        label-for="country">
+        <b-form-select id="country" v-model="form.selectedCountry" :options="form.countries" :state="validateState('selectedCountry')" ></b-form-select>
+        <b-form-invalid-feedback v-if="!$v.form.selectedCountry.required">
           Country is required
         </b-form-invalid-feedback>
       </b-form-group>
@@ -87,10 +83,14 @@
           For that, your password should be also:
         </b-form-text>
         <b-form-invalid-feedback
-          v-if="$v.form.password.required && !$v.form.password.length"
-        >
+          v-if="$v.form.password.required && !$v.form.password.length">
           Have length between 5-10 characters long
         </b-form-invalid-feedback>
+        <b-form-invalid-feedback
+          v-else-if="!$v.form.password.regexValid">
+          Must contain at least one number, and one special character
+        </b-form-invalid-feedback>
+
       </b-form-group>
 
       <b-form-group
@@ -114,6 +114,34 @@
           The confirmed password is not equal to the original password
         </b-form-invalid-feedback>
       </b-form-group>
+
+      <b-form-group
+      id="Email"
+      label-cols-sm="3"
+      label="Email address:"
+      label-for="EmailAddress"
+      description="We'll never share your email with anyone else."
+    >
+      <b-form-input
+        id="EmailAddress"
+        v-model="$v.form.email.$model"
+        type="text"
+        :state="validateState('email')"
+        placeholder="Enter email"
+        required
+      ></b-form-input>
+      <b-form-invalid-feedback v-if="!$v.form.email.required">
+        Email is required
+      </b-form-invalid-feedback>
+      <b-form-invalid-feedback v-else-if="!$v.form.email.regexEmail">
+        Email Pattern Illegal
+      </b-form-invalid-feedback>
+
+    </b-form-group>
+        <!-- <b-form-invalid-feedback v-if="!$v.form.email.validEmail">
+          Invalid email format
+        </b-form-invalid-feedback> -->
+
 
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
@@ -152,16 +180,14 @@ import {
   maxLength,
   alpha,
   sameAs,
-  email
-} from "vuelidate/lib/validators";
-
+  email,} from "vuelidate/lib/validators";
 export default {
   name: "Register",
   data() {
     return {
       form: {
         countries:countriess,
-        countries_chooice: "Israel",
+        selectedCountry: "",
         username: "",
         firstName: "",
         lastName: "",
@@ -171,7 +197,7 @@ export default {
         submitError: undefined
       },
       errors: [],
-      validated: false
+      // validated: false
     };
   },
   validations: {
@@ -181,26 +207,25 @@ export default {
         length: (u) => minLength(3)(u) && maxLength(8)(u),
         alpha
       },
-      country: {
+      selectedCountry: {
         required
       },
       password: {
         required,
+        regexValid: (value) => /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{5,10}$/.test(value),
         length: (p) => minLength(5)(p) && maxLength(10)(p)
       },
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
+      },
+      email: {
+        required,
+        regexEmail: (value) => /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)
       }
     }
   },
   mounted() {
-    // console.log("mounted");
-    // this.countries.push(...countries);
-    // this.countries_chooice = "Israel";
-    
-    // console.log(this.countries)
-    // console.log($v);
   },
   methods: {
     validateState(param) {
@@ -210,12 +235,14 @@ export default {
     async Register() {
       try {
         const response = await this.axios.post(
-          // "https://test-for-3-2.herokuapp.com/user/Register",
-          this.$root.store.server_domain + "/Register",
-
+          this.$root.store.store_state.server_domain + "auth/Register",
           {
             username: this.form.username,
-            password: this.form.password
+            password: this.form.password,
+            firstname: this.form.firstName,
+            lastname: this.form.lastName,
+            country: this.form.selectedCountry,
+            email: this.form.email
           }
         );
         this.$router.push("/login");
@@ -226,7 +253,6 @@ export default {
       }
     },
     onRegister() {
-      // console.log("register method called");
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
@@ -239,7 +265,7 @@ export default {
         username: "",
         firstName: "",
         lastName: "",
-        country: null,
+        selectedCountry: "",
         password: "",
         confirmedPassword: "",
         email: ""
@@ -248,8 +274,7 @@ export default {
         this.$v.$reset();
       });
     }
-  }
-};
+  },};
 </script>
 <style lang="scss" scoped>
 .container {
