@@ -1,8 +1,6 @@
 <template>
   <div id="previewitem">
-    <router-link
-              :to="{ name: 'recipe', params: { recipeId: recipe.id ,src: recipe.source} }"
-              class="recipe-preview">
+   
             
         <b-card v-if="!isWached"  
           :title="recipe.name"
@@ -13,7 +11,9 @@
           style="max-width: 20rem;"
           class="mb-2 enlarge-on-hover"
           border-variant="primary">
-          
+           <router-link
+              :to="{ name: 'recipe', params: { recipeId: recipe.id ,src: recipe.source} }"
+              class="recipe-preview">
           <b-card-text>
             <ul class="recipe-overview">
               <li v-if="recipe.creator">{{ recipe.creator }}</li>
@@ -50,6 +50,7 @@
 
             </ul>
           </b-card-text>
+              </router-link>
           <AddToFavoritesBtn
             :recipe="recipe"
             :data="data"
@@ -65,6 +66,9 @@
         style="max-width: 20rem;"
         class="mb-2 enlarge-on-hover"
         border-variant="dark">
+         <router-link
+              :to="{ name: 'recipe', params: { recipeId: recipe.id ,src: recipe.source} }"
+              class="recipe-preview">
           <b-card-text>
             <ul class="recipe-overview">
 
@@ -95,8 +99,8 @@
             :data="data"
             v-if="this.$root.store.username"
           ></AddToFavoritesBtn>
+          </router-link>
         </b-card>
-    </router-link>
     </div>
 </template>
 

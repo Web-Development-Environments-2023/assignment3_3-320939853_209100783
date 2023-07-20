@@ -186,7 +186,7 @@ export default {
       else if(this.purpose == 'LASTVISITED'){
         const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint
-            + "?limit=4",);
+            + "?limit=3",);
         let lists  = response.data.visitedRecipes
         let responseses  = []
         lists.API.forEach((elem) => {

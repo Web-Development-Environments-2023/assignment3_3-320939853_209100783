@@ -102,7 +102,7 @@ export default {
     async Login() {
       try {
         const response = await this.axios.post(
-          this.$root.store.store_state.server_domain +"Login/",
+          this.$root.store.store_state.server_domain +"auth/Login",
           {
             username: this.form.username,
             password: this.form.password
