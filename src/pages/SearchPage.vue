@@ -38,6 +38,7 @@ export default {
       sortBy:"time"
     };
   },
+ 
   methods: {
     handleSorting(atterBy){
       this.sortBy = atterBy;
