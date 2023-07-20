@@ -4,11 +4,12 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-card-group deck class="deck">
-
-        <b-card deck v-for="r in sortedArray" :key="r.id" >
+    <b-card-group deck class="deck" >
+        
+        <v-card deck v-for="r in sortedArray" :key="r.id" >
           <RecipePreview :recipe="r" :data="data"></RecipePreview>
-        </b-card>
+        </v-card>
+        
     </b-card-group>
     <b-button variant="outline-primary"
         style="width:100px;"
@@ -55,19 +56,17 @@ export default {
       recipes: [],
     };
   },
-  // mounted() {
-  //   this.updateRecipes();
-  // },
+  
   computed:{
     sortedArray() {
+      
       if (this.sortBy == "time"){
-        console.log(this.sortBy)
         return [...this.recipes].sort((a, b) => a.Time - b.Time);
         }
       else
         return [...this.recipes].sort((a, b) => a.portions - b.portions);
     },
-    
+  
   },
   methods: {
     addSourceToRecipe(recpie,source){
@@ -134,6 +133,7 @@ export default {
             elem = this.checkIfInFav(elem);
             this.recipes.push(elem)
           });
+         
           
         } catch (error) {
           console.log(error);
