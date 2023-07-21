@@ -1,41 +1,53 @@
 <template>
-  <div class="container">
+  <div class="main-page">
+        <div class="left-column">
+            <div class="recipe-list">
+              <RecipePreviewList
+            title="Random Recipes"
+            class="RandomRecipes center" 
+            endpoint="recipes/randomrecipes?number=3"
+            purpose="RANDOM"
+            :data="data"/>
+            </div>
+        </div>
+        <div class="right-column">
+            <div v-if="!$root.store.username">
+              <LoginPage/>
+            </div>
+            <div v-else>
+              Here Will Be The shit of Last Visited
+            </div>
+        </div>
+
+  <!-- <div class="container">
     <h1 class="title">Main Page</h1>
-    <RecipePreviewList
-      title="Random Recipes"
-      class="RandomRecipes center" 
-      endpoint="recipes/randomrecipes?number=3"
-      purpose="RANDOM"
-      :data="data"
-      />
-    <router-link v-if="!$root.store.username" to="/login">You need to Login to vue this</router-link>
-    <!-- <RecipePreviewList v-if="$root.store.username"
-      title="Last Viewed Recipes"
-      :class="{
-        RandomRecipes: true,
-        blur: !$root.store.username,
-        center: true
-      }"
-      disabled
-      endpoint="users/visitedRecipes?limit=3"
-    ></RecipePreviewList> -->
-
-
-    
-    <!-- <div
-      style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
-    >
-      Centeredasdasdad
-    </div>-->
+    <b-container fluid>
+      <b-row>
+        <b-col>
+          <RecipePreviewList
+            title="Random Recipes"
+            class="RandomRecipes center" 
+            endpoint="recipes/randomrecipes?number=3"
+            purpose="RANDOM"
+            :data="data"/>
+          </b-col>
+        <b-col>
+      <LoginPage/>
+    </b-col>
+      
+    </b-row>
+    </b-container>   -->
   </div>
 </template>
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import LoginPage from "./LoginPage.vue";
 export default {
   components: {
-    RecipePreviewList
-  },
+    RecipePreviewList,
+    LoginPage
+},
   props:{
     data: {
       type: Object,
@@ -57,8 +69,24 @@ export default {
   pointer-events: none;
   cursor: default;
 }
-// div#randomrecipes{
-//   width: 10%;
-//   height: 15%;
-// }
+.main-page {
+    display: flex;
+    padding: 0 20px;
+    /* Add padding to the sides */
+}
+
+.left-column {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.right-column {
+    flex: 1;
+}
+
+.recipe-list {
+    display: flex;
+    flex-wrap: wrap;
+    
+}
 </style>

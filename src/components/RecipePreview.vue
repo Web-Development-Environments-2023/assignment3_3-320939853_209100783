@@ -16,14 +16,8 @@
             </router-link>
           <ul class="recipe-overview">
             <li v-if="recipe.creator">{{ recipe.creator }}</li>
-            <!-- <li v-else>Unkown Time</li> -->
 
             <li v-if="recipe.When">{{ recipe.When }}</li>
-            <!-- <li v-else>Unkown Time</li> -->
-
-            <!-- LAST ONE - NOT NECESSARY  -->
-            <!-- <li v-if="recipe.origin">{{ recipe.origin }}</li> -->
-            <!-- <li v-else>Unkown Time</li> -->
 
 
 

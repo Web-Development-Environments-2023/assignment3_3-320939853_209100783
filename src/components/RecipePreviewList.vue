@@ -4,8 +4,8 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-card-group deck class="deck">
-        <b-card deck v-for="r in recipes" :key="r.id">
+    <b-card-group columns class="columns">
+        <b-card column style="flex: 0 0 70%;" v-for="r in recipes" :key="r.id">
           <RecipePreview :recipe="r" :data="data" />
         </b-card>
     </b-card-group>
@@ -13,8 +13,7 @@
         style="width:100px;"
         class="mx-auto w-100"
         @click="updateRecipes"
-        v-if="purpose === 'RANDOM'"
-    >Refresh Random Recipes</b-button>
+        v-if="purpose === 'RANDOM'">Refresh Random Recipes</b-button>
   </b-container>
 </template>
 
@@ -49,9 +48,6 @@ export default {
       recipes: [],
     };
   },
-  // mounted() {
-  //   this.updateRecipes();
-  // },
   methods: {
     addSourceToRecipe(recpie,source){
       recpie.source = source;
@@ -169,10 +165,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  width: 100%;
-  height: 100%;
-}
-.deck{
   width: 100%;
   height: 100%;
 }
