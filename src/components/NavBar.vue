@@ -44,45 +44,56 @@
             </b-navbar-nav>
             <b-navbar-nav>
             <b-button @click="openModal">New Recipe</b-button>
-            <b-modal  ok-only ok-title="Submit" @ok="CreateRecipe" @mouseout="Reset" v-model="modalShow">
+            <b-modal id="RecipeModal"  ok-only ok-title="Submit" @ok.prevent="CreateRecipe" @mouseout="Reset" v-model="modalShow">
               <h2>Create New Recipe !</h2>
               <b-form-group id="recipename-group" label-cols-sm="3" label="Recipe Name:">
-                <b-form-input id="recipe_name" type="text" v-model="recipe_name" required></b-form-input> 
-                <b-form-invalid-feedback v-if="recipe_name === '' ">Invalid</b-form-invalid-feedback>
+                <b-form-input id="recipe_name" type="text" v-model="form.recipe_name"  :state="validateState('recipe_name')" ></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.recipe_name.required">Recipe Name is required</b-form-invalid-feedback>
+              </b-form-group>
+              <b-form-group id="recipeimage-group" label-cols-sm="3" label="Recipe Image:">
+                <!-- <b-form-input id="recipe_image" type="text" v-model="form.recipe_name"  :state="validateState('recipe_name')" ></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.recipe_name.required">Recipe Name is required</b-form-invalid-feedback> -->
               </b-form-group>
               <b-form-group id="time-group" label-cols-sm="3" label="Preparation Time:(In Minutes)">
-                <b-form-input id="time" type="number" min="0" v-model="time" required></b-form-input>
+                <b-form-input id="time" type="number" min="0" v-model="form.time" :state="validateState('time')"></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.time.required">Preperation Time is required</b-form-invalid-feedback>
               </b-form-group>
               <b-form-group id="portions_input" label="Portions:" label-cols-sm="3">
-                <b-form-input id="portions" type="number" min="0" max="10" v-model="portions" required></b-form-input>
+                <b-form-input id="portions" type="number" min="0" max="10" v-model="form.portions" :state="validateState('portions')"></b-form-input>
+                <b-form-invalid-feedback v-if="!$v.form.portions.required">Portions is required</b-form-invalid-feedback>
               </b-form-group>
               <b-form-group label="Vegetarian:" label-cols-sm="3">
-                <b-form-select id="veget_select" v-model="isVeget" :options="options" required></b-form-select>
+                <b-form-select id="veget_select" v-model="form.isVeget" :options="options" :state="validateState('isVeget')"></b-form-select>
+                <b-form-invalid-feedback v-if="!$v.form.isVeget.required">isVeget is required</b-form-invalid-feedback>
               </b-form-group>
               <b-form-group label="Vegan:" label-cols-sm="3">
-                <b-form-select id="vegan_select" v-model="isVegan" :options="options" required></b-form-select>
+                <b-form-select id="vegan_select" v-model="form.isVegan" :options="options" :state="validateState('isVegan')" ></b-form-select>
+                <b-form-invalid-feedback v-if="!$v.form.isVegan.required">isVegan is required</b-form-invalid-feedback>
               </b-form-group>
               <b-form-group label="Gluten Free:" label-cols-sm="3">
-                <b-form-select id="gluten_select" v-model="isGfree" :options="options" required></b-form-select>
+                <b-form-select id="gluten_select" v-model="form.isGfree" :options="options" :state="validateState('isGfree')"></b-form-select>
+                <b-form-invalid-feedback v-if="!$v.form.isGfree.required">isGfree is required</b-form-invalid-feedback>
               </b-form-group>
-              <b-form-group id="likes_input" label="Likes:" label-cols-sm="3">
-                <b-form-input id="time" type="number" min="0" v-model="Likes" required></b-form-input>
+              <b-form-group id="likes_input" label="Likes:" label-cols-sm="3" :state="validateState('Likes')">
+                <b-form-input id="time" type="number" min="0" v-model="form.Likes"></b-form-input>
               </b-form-group>
               <b-form-group id="cuisine_input" label="Cuisine:" label-cols-sm="3">
-                <b-form-select id="cuisine_selection" v-model="cuisine" :options="cuisine_options" required></b-form-select>
+                <b-form-select id="cuisine_selection" v-model="form.cuisine" :options="cuisine_options"  :state="validateState('cuisine')"></b-form-select>
+                <b-form-invalid-feedback v-if="!$v.form.cuisine.required">cuisine is required</b-form-invalid-feedback>
               </b-form-group>
               <b-form-group id="intolerances_input" label="Intolerance:" label-cols-sm="3">
-                <b-form-select id="Intolerances_selection" v-model="intolerance" :options="intolerances_options" required></b-form-select>
+                <b-form-select id="Intolerances_selection" v-model="form.intolerance" :options="intolerances_options" :state="validateState('intolerance')"></b-form-select>
+                <b-form-invalid-feedback v-if="!$v.form.intolerance.required">intolerance is required</b-form-invalid-feedback>
               </b-form-group>
-              <b-form-group id="Ingredients_input" label="Ingredients:" label-cols-sm="3">
+              <b-form-group id="Ingredients_input" label="Ingredients:" label-cols-sm="3" >
                 <b-form-input placeholder="ingredient name" id="ingredient-name" v-model="ingredientName"></b-form-input>
                 <b-form-input placeholder="ingredient amount" type="number" min="0" id="ingredient-amount" v-model="ingredientAmount"></b-form-input>
                 <b-form-input placeholder="amount type" id="ingredient-amount-type" v-model="ingredientType"></b-form-input>
                 <b-button @click="addIngredient">Add Ingredient</b-button>
               </b-form-group>
-                <ul v-if="ingredients.length > 0">
+                <ul v-if="form.ingredients.length > 0">
                   <h4>Current Ingredients:</h4>
-                  <li v-for="(ingredient, index) in ingredients" :key="index">
+                  <li v-for="(ingredient, index) in form.ingredients" :key="index">
                     <div>{{ ingredient.name+","+ingredient.amount+""+ingredient.type }}
                       <b-button @click="DeleteIngredient(index)" size="sm" class="ml-2">X</b-button></div>
                   </li>
@@ -92,9 +103,9 @@
                 <b-form-input placeholder="Step Description" id="stepDesc" v-model="stepDesc"></b-form-input>
                 <b-button @click="addStep">Add Step</b-button>
               </b-form-group>
-              <ul v-if="steps.length > 0">
+              <ul v-if="form.steps.length > 0">
                   <h4>Steps:</h4>
-                  <li v-for="(step, index) in steps" :key="index">
+                  <li v-for="(step, index) in form.steps" :key="index">
                     <div>{{ step.stepNumber+":"+step.stepDesc}}
                       <b-button @click="DeleteStep(index)" size="sm" class="ml-2">X</b-button></div>
                   </li>
@@ -130,6 +141,7 @@
   import {couisine} from "../assets/consts.js";
   import {intolerances} from "../assets/consts.js"
   import { BButton, BModal } from "bootstrap-vue";
+  import {required} from "vuelidate/lib/validators";
   export default {
     name: "NavBar",
     components:{
@@ -139,18 +151,22 @@
     data() {
         return {
           modalShow: false,
+          form:{
             recipe_name: "",
             time: "",
             Likes: 0,
             isVeget:"",
             isVegan: "",
             isGfree: "",
-            portions: "",
+            portions: 0,
             image: "",
             intolerance: "",
             cuisine:"",
             ingredients:[],
             steps:[],
+            submitError:undefined
+          },
+          errors:[],
             options: [
           { value: 'True', text: 'Yes' },
           { value: 'False', text: 'No' }],
@@ -163,29 +179,64 @@
           stepDesc:"",
         };
     },
+    validations: {
+    form: {
+      recipe_name: {
+        required,      
+      },
+      time: {
+        required
+      },
+      Likes: {
+        required,
+      },
+      isVeget: {
+        required,
+      },
+      isVegan: {
+        required,
+      },
+      isGfree: {
+        required,
+      },
+      portions: {
+        required,
+      },
+      intolerance: {
+        required,
+      },
+      cuisine: {
+        required,
+      },
+    }
+  },
     methods: {
+      validateState(param) {
+      const { $dirty, $error } = this.$v.form[param];
+      return $dirty ? !$error : null;
+    },
       openModal(){
         this.Reset();
         this.modalShow = !this.modalShow
       },
       addIngredient() {
         let Ingredient = {name: this.ingredientName, amount: this.ingredientAmount, type:this.ingredientType};
-        this.ingredients.push(Ingredient);
+        this.form.ingredients.push(Ingredient);
         this.ingredientName="";
         this.ingredientAmount="";
         this.ingredientType="";
       },
       DeleteIngredient(index) {
-      this.ingredients.splice(index, 1);
+      this.form.ingredients.splice(index, 1);
       },
       addStep(){
         let step = {stepNumber:this.stepNumber, stepDesc:this.stepDesc}
-        this.steps.push(step);
+        this.form.steps.push(step);
         this.stepNumber="";
         this.stepDesc="";
       },
       DeleteStep(index){
-        this.steps.splice(index,1);
+        this.form.steps.splice(index,1);
       },
       Logout() {
         this.$root.store.logout();
@@ -196,49 +247,62 @@
         });
       },
       async CreateRecipe() {
+        this.$v.form.$touch();
+        if (this.$v.form.$anyError) {
+        return;
+      }
         console.log("HUY");
       try {
         const response = await this.axios.post(
           this.$root.store.store_state.server_domain + "users/createrecipe",
           {
-            name: this.recipe_name,
-            Time: this.time,
-            Likes:this.Likes,
-            isVegan:this.isVegan,
-            isVeget:this.isVeget,
-            isGfree:this.isGfree,
-            portions: this.portions,
-            intolerances: this.intolerance,
-            cuisine:this.cuisine,
-            ingredients:this.ingredients,
-            steps:this.steps,
-            image:this.image
+            name: this.form.recipe_name,
+            Time: this.form.time,
+            Likes:this.form.Likes,
+            isVegan:this.form.isVegan,
+            isVeget:this.form.isVeget,
+            isGfree:this.form.isGfree,
+            portions: this.form.portions,
+            intolerances: this.form.intolerance,
+            cuisine:this.form.cuisine,
+            ingredients:this.form.ingredients,
+            steps:this.form.steps,
+            image:this.form.image
           },
-          this.Reset()
+          //Move to recipe page
         );
+        this.Reset();
+        let recipeId = response.data.recipeid;
+        this.$router.push({name: 'recipe', params: { recipeId: recipeId ,src: "Server"}})
+        // this.$bvModal.hide('RecipeModal');
+        
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
       }
     },
     Reset(){
-            this.recipe_name ="";
-            this.time = "";
-            this.Likes =0;
-            this.isVegan = "";
-            this.isVeget ="";
-            this.isGfree ="";
-            this.portions ="";
-            this.intolerance ="";
-            this.cuisine ="";
-            this.ingredients =[];
-            this.steps =[];
-            this.image ="";
+      this.form= {
+            recipe_name: "",
+            time: "",
+            Likes: 0,
+            isVeget:"",
+            isVegan: "",
+            isGfree: "",
+            portions: "",
+            image: "",
+            intolerance: "",
+            cuisine:"",
+            ingredients:[],
+            steps:[],};
             this.ingredientName ="";
             this.ingredientAmount ="";
             this.ingredientType ="";
             this.stepNumber ="";
             this.stepDesc ="";
+            this.$nextTick(() => {
+            this.$v.$reset();
+      });
     }
     },
   }
