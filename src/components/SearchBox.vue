@@ -72,7 +72,7 @@
         <b-form-select
           id="numbersOptions"
           :options="numbersOptions.options"
-          v-model="numbersOptions.default"
+          v-model="numbersOptionsSelected"
         >
         </b-form-select>
         <b-form-invalid-feedback>
@@ -96,27 +96,49 @@ export default {
    name: "SeachBox",
    data() {
       return {
-         cousinines: couisine,
-         cusinies_chooice: "null",
-         diets: diet,
-         diet_chooice: null,
-         intolerancess: intolerances,
-         intolerancess_choocie: null,
-         dish:"",
-         dish_choocie: null,
-         numbersOptions:{
-            default:5,
-            options:[{text:5,value:5},{text:10,value:10},{text:15,value:15}],
-         }
+        cousinines: couisine,
+        cusinies_chooice: "",
+        diets: diet,
+        diet_chooice: "",
+        intolerancess: intolerances,
+        intolerancess_choocie: "",
+        dish:"",
+        dish_choocie: "",
+        numbersOptionsSelected: 5,
+        numbersOptions:{
+          default:5,
+          options:[{text:5,value:5},{text:10,value:10},{text:15,value:15}],
+        }
       
       
-   }
+    }
+   },
+   created() {
+    if (localStorage.getItem("username")){
+      let local = JSON.parse(sessionStorage.getItem('lastSearch')); 
+      if (local){
+        this.cusinies_chooice = local['cusinies_chooice']
+        this.diet_chooice = local['diet_chooice']
+        this.intolerancess_choocie = local['intolerancess_choocie']
+        this.numbersOptionsSelected = local['numbersOptionsSelected']
+        this.dish_choocie = local['dish_choocie']
+      }
+    }
    },
    methods: {
       async searchRecipe(){
          try {
-            const url =  `recipes/searchrecipe/${this.dish_choocie}?cuisine=${this.cusinies_chooice}&diet=${this.diet_chooice}&intolerance=${this.intolerancess_choocie}&number=${this.numbersOptions.default}`;
+            const url =  `recipes/searchrecipe/${this.dish_choocie}?cuisine=${this.cusinies_chooice}&diet=${this.diet_chooice}&intolerance=${this.intolerancess_choocie}&number=${this.numbersOptionsSelected}`;
             this.$emit('clicked', url);
+            if (localStorage.getItem("username")){
+              sessionStorage.setItem('lastSearch', JSON.stringify({
+                                                  cusinies_chooice:this.cusinies_chooice,
+                                                  diet_chooice:this.diet_chooice,
+                                                  intolerancess_choocie:this.intolerancess_choocie,
+                                                  dish_choocie:this.dish_choocie,
+                                                  numbersOptionsSelected:this.numbersOptionsSelected
+                                                  }))
+              }
          } catch (error) {
             console.log(error);
          }

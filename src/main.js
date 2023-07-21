@@ -16,6 +16,8 @@ import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {
+  ImagePlugin ,
+  ListGroupPlugin ,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,
@@ -26,8 +28,12 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  FormRadioPlugin ,
 } from "bootstrap-vue";
 [
+  ImagePlugin ,
+  ListGroupPlugin ,
+  FormRadioPlugin ,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,
@@ -88,6 +94,7 @@ const shared_data = {
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
+    sessionStorage.removeItem('lastSearch');
     this.username = undefined;
   },
   

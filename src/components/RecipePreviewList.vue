@@ -4,10 +4,20 @@
       {{ title }}:
       <slot></slot>
     </h3>
-    <b-card-group columns class="columns">
-        <b-card column style="flex: 0 0 70%;" v-for="r in recipes" :key="r.id">
-          <RecipePreview :recipe="r" :data="data" />
-        </b-card>
+    <b-card-group deck class="deck" :key="getRecipesLen">
+        
+        <div deck v-for="r in sortedArray" :key="r.id" >
+          <RecipePreview :recipe="r" :data="data"></RecipePreview>
+        </div>
+        
+        <div v-if="getRecipesLen" :key="getRecipesLen">
+           <b-card>
+            <b-card-text>
+              No Result Has been found yet
+            </b-card-text>
+            
+          </b-card>
+        </div>
     </b-card-group>
     <b-button variant="outline-primary"
         style="width:100px;"
@@ -41,12 +51,32 @@ export default {
       type: Object,
       required : true,
     },
+    sortBy: {
+      type: String,
+      required: false,
+      default: "time"
+    }
     
   },
   data() {
     return {
       recipes: [],
     };
+  },
+  
+  computed:{
+    sortedArray() {
+      
+      if (this.sortBy == "time"){
+        return [...this.recipes].sort((a, b) => a.Time - b.Time);
+        }
+      else
+        return [...this.recipes].sort((a, b) => a.portions - b.portions);
+    },
+    getRecipesLen(){
+      return this.recipes.length == 0;
+    },
+  
   },
   methods: {
     addSourceToRecipe(recpie,source){
@@ -99,6 +129,8 @@ export default {
         }
       }
       if(this.purpose == 'SIMPLE' || this.purpose == 'RANDOM'){
+        // if simple -> search then check if recipes are in the storage @eitag-uni
+        
         try {
           const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint,
@@ -111,6 +143,8 @@ export default {
             elem = this.checkIfInFav(elem);
             this.recipes.push(elem)
           });
+         
+          
         } catch (error) {
           console.log(error);
         }
@@ -123,8 +157,8 @@ export default {
           for (let index = 0; index < serverIds.length; index++) {
             const element = serverIds[index];
             const response = await this.axios.get(
-            this.$root.store.store_state.server_domain + this.endpoint
-            + `${element}?src=Server`,);
+                                                    this.$root.store.store_state.server_domain + this.endpoint
+                                                    + `${element}?src=Server`,);
             let dataElement = response.data;
             dataElement.isFav = true;
             dataElement = this.addSourceToRecipe(dataElement,"Server");
@@ -141,12 +175,30 @@ export default {
             dataElement = this.addSourceToRecipe(dataElement,"API");
             respoces.push(dataElement);
           }
-
+          
           this.recipes = respoces;
-
         } catch (error) {
           console.log(error);
         }
+
+      }
+      else if(this.purpose == 'LASTVISITED'){
+        const response = await this.axios.get(
+            this.$root.store.store_state.server_domain + this.endpoint
+            + "?limit=3",);
+        let lists  = response.data.visitedRecipes
+        let responseses  = []
+        lists.API.forEach((elem) => {
+              elem = this.addSourceToRecipe(elem,"API");
+              elem = this.checkIfInFav(elem);
+              responseses.push(elem)
+        });
+        lists.Server.forEach((elem) => {
+              elem = this.addSourceToRecipe(elem,"Server");
+              elem = this.checkIfInFav(elem);
+              responseses.push(elem)
+        })
+        this.recipes = responseses;
 
       }
     }
@@ -158,6 +210,7 @@ export default {
         this.updateRecipes();
       },
     },
+    
   },
 
 };
