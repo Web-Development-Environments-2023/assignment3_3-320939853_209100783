@@ -16,6 +16,7 @@ import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {
+  FormFilePlugin ,
   ImagePlugin ,
   ListGroupPlugin ,
   FormGroupPlugin,
@@ -31,6 +32,7 @@ import {
   FormRadioPlugin ,
 } from "bootstrap-vue";
 [
+  FormFilePlugin ,
   ImagePlugin ,
   ListGroupPlugin ,
   FormRadioPlugin ,
