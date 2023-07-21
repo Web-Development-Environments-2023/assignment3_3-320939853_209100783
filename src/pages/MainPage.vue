@@ -12,10 +12,10 @@
         </div>
         <div class="right-column">
             <div v-if="!$root.store.username">
-              <LoginPage/>
+              <LoginPage :data="data"/>
             </div>
             <div v-else>
-              Here Will Be The shit of Last Visited
+              <LastVisitedVue :data="data"></LastVisitedVue>
             </div>
         </div>
 
@@ -43,10 +43,12 @@
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
 import LoginPage from "./LoginPage.vue";
+import LastVisitedVue from './LastVisited.vue';
 export default {
   components: {
     RecipePreviewList,
-    LoginPage
+    LoginPage,
+    LastVisitedVue,
 },
   props:{
     data: {
