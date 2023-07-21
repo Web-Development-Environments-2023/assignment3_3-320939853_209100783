@@ -96,6 +96,7 @@ const shared_data = {
     localStorage.removeItem("username");
     sessionStorage.removeItem('lastSearch');
     this.username = undefined;
+    localStorage.removeItem('userId');
   },
   
 };

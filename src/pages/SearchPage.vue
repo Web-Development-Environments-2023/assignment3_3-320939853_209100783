@@ -13,7 +13,6 @@
       v-if="ednpointSearch"
     >
     </RecipePreviewList>
-    <LastVisitedVue :data="data"></LastVisitedVue>
     
   </div>
 </template>
@@ -22,7 +21,6 @@
 import SearchBox from "../components/SearchBox.vue";
 import RecipePreviewList from "../components/RecipePreviewList.vue";
 import SortItems from "../components/SortItems.vue"
-import LastVisitedVue from './LastVisited.vue';
 export default {
   
   name:"SearchPage",
@@ -30,8 +28,6 @@ export default {
     SearchBox,
     RecipePreviewList,
     SortItems,
-    LastVisitedVue,
-    
 
   },
   data() {
