@@ -71,7 +71,7 @@ export default {
         return [...this.recipes].sort((a, b) => a.Time - b.Time);
         }
       else
-        return [...this.recipes].sort((a, b) => a.portions - b.portions);
+        return [...this.recipes].sort((a, b) => a.Likes - b.Likes);
     },
     getRecipesLen(){
       return this.recipes.length == 0;

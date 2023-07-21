@@ -31,9 +31,12 @@
               <li v-if="recipe.Time">{{ recipe.Time }} minutes</li>
               <li v-else>Unkown Time</li>
 
-              <li v-if="recipe.portions">{{ recipe.portions }} likes</li>
-              <li v-else>Unkown Portions</li>
+              <li v-if="recipe.Likes">{{ recipe.Likes }} likes</li>
+              <li v-else>Unkown Likes</li>
 
+              <li v-if="recipe.portions">{{ recipe.portions }} Portions</li>
+              <li v-else>Unkown Portions</li>
+              
               <li v-if="recipe.isVegan" class="list-item-with-image">Vegan
                 <img src="../assets/Veg-logo.png" alt="Image">
               </li>
