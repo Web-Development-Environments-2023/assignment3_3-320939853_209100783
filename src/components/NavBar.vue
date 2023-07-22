@@ -82,10 +82,12 @@
               <b-form-file
                 id="recipe_image"
                 v-model="form.image"
-                :state="Boolean(form.image)"
+                :state="validateState('image')"
                 placeholder="Choose a file or drop it here..."
               ></b-form-file>
-              <!-- <b-form-invalid-feedback v-if="!$v.form.recipe_name.required">Recipe Name is required</b-form-invalid-feedback> -->
+              <b-form-invalid-feedback v-if="!$v.form.image.required"
+                >Image is required</b-form-invalid-feedback
+              >
             </b-form-group>
 
             <b-form-group
@@ -127,7 +129,7 @@
               <b-form-select
                 id="veget_select"
                 v-model="form.isVeget"
-                :options="options"
+                :options="options_Bool"
                 :state="validateState('isVeget')"
               ></b-form-select>
               <b-form-invalid-feedback v-if="!$v.form.isVeget.required"
@@ -139,7 +141,7 @@
               <b-form-select
                 id="vegan_select"
                 v-model="form.isVegan"
-                :options="options"
+                :options="options_Bool"
                 :state="validateState('isVegan')"
               ></b-form-select>
               <b-form-invalid-feedback v-if="!$v.form.isVegan.required"
@@ -151,7 +153,7 @@
               <b-form-select
                 id="gluten_select"
                 v-model="form.isGfree"
-                :options="options"
+                :options="options_Bool"
                 :state="validateState('isGfree')"
               ></b-form-select>
               <b-form-invalid-feedback v-if="!$v.form.isGfree.required"
@@ -223,7 +225,7 @@
                 id="ingredient-amount-type"
                 v-model="ingredientType"
               ></b-form-input>
-              <b-button @click="addIngredient">Add Ingredient</b-button>
+              <b-button v-if="ingredientName && ingredientAmount && ingredientType" @click="addIngredient">Add Ingredient</b-button>
             </b-form-group>
 
             <ul v-if="getIngridientsLength">
@@ -260,7 +262,7 @@
                 id="stepDesc"
                 v-model="stepDesc"
               ></b-form-input>
-              <b-button @click="addStep">Add Step</b-button>
+              <b-button v-if="stepNumber && stepDesc" @click="addStep">Add Step</b-button>
             </b-form-group>
             <ul v-if="getStepsLength">
               <h4>Steps:</h4>
@@ -329,7 +331,7 @@ export default {
         isVegan: "",
         isGfree: "",
         portions: 0,
-        image: "",
+        image: [],
         intolerance: "",
         cuisine: "",
         ingredients: [],
@@ -337,7 +339,7 @@ export default {
         submitError: undefined,
       },
       errors: [],
-      options: [
+      options_Bool: [
         { value: "True", text: "Yes" },
         { value: "False", text: "No" },
       ],
@@ -379,6 +381,9 @@ export default {
       cuisine: {
         required,
       },
+      image: {
+        required,
+      }
     },
   },
   methods: {
@@ -460,8 +465,8 @@ export default {
           name: "recipe",
           params: { recipeId: recipeId, src: "Server" },
         });
-        // this.$bvModal.hide('RecipeModal');
-      } catch (err) {
+        this.modalShow = false;
+              } catch (err) {
         console.log(err);
         this.form.submitError = err.response.data.message;
       }
@@ -475,7 +480,7 @@ export default {
         isVegan: "",
         isGfree: "",
         portions: "",
-        image: "",
+        image: [],
         intolerance: "",
         cuisine: "",
         ingredients: [],
