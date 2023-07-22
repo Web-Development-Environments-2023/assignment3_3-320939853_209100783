@@ -78,6 +78,7 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
+  server_domain:"https://eitag-tseytlin.cs.bgu.ac.il",
   store_state: store_state,
   store_actions: store_actions,
   username: localStorage.username,
