@@ -1,56 +1,38 @@
 <template>
   <div class="main-page">
-        <div class="left-column">
-            <div class="recipe-list">
-              <RecipePreviewList
-            title="Random Recipes"
-            class="RandomRecipes center" 
-            endpoint="recipes/randomrecipes?number=3"
-            purpose="RANDOM"
-            :data="data"/>
-            </div>
-        </div>
-        <div class="right-column">
-            <div v-if="!$root.store.username">
-              <LoginPage :data="data"/>
-            </div>
-            <div v-else>
-              <LastVisitedVue :data="data"></LastVisitedVue>
-            </div>
-        </div>
-
-  <!-- <div class="container">
-    <h1 class="title">Main Page</h1>
-    <b-container fluid>
-      <b-row>
-        <b-col>
-          <RecipePreviewList
-            title="Random Recipes"
-            class="RandomRecipes center" 
-            endpoint="recipes/randomrecipes?number=3"
-            purpose="RANDOM"
-            :data="data"/>
-          </b-col>
-        <b-col>
-      <LoginPage/>
-    </b-col>
-      
-    </b-row>
-    </b-container>   -->
+    <div class="left-column">
+      <div class="recipe-list">
+        <RecipePreviewList
+          title="Random Recipes"
+          class="RandomRecipes center"
+          endpoint="recipes/randomrecipes?number=3"
+          purpose="RANDOM"
+          :data="data"
+        ></RecipePreviewList>
+      </div>
+    </div>
+    <div class="right-column">
+      <div v-if="!$root.store.username">
+        <LoginPage :data="data"></LoginPage>
+      </div>
+      <div v-else>
+        <LastVisitedVue :data="data"></LastVisitedVue>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
 import LoginPage from "./LoginPage.vue";
-import LastVisitedVue from './LastVisited.vue';
+import LastVisitedVue from "./LastVisited.vue";
 export default {
   components: {
     RecipePreviewList,
     LoginPage,
     LastVisitedVue,
-},
-  props:{
+  },
+  props: {
     data: {
       type: Object,
       required: true,
@@ -72,23 +54,22 @@ export default {
   cursor: default;
 }
 .main-page {
-    display: flex;
-    padding: 0 20px;
-    /* Add padding to the sides */
+  display: flex;
+  padding: 0 20px;
+  /* Add padding to the sides */
 }
 
 .left-column {
-    flex: 1;
-    margin-right: 20px;
+  flex: 1;
+  margin-right: 20px;
 }
 
 .right-column {
-    flex: 1;
+  flex: 1;
 }
 
 .recipe-list {
-    display: flex;
-    flex-wrap: wrap;
-    
+  display: flex;
+  flex-wrap: wrap;
 }
 </style>
