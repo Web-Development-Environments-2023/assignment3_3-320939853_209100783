@@ -243,10 +243,9 @@ export default {
             lastname: this.form.lastName,
             country: this.form.selectedCountry,
             email: this.form.email
-          }
+          },{ withCredentials: true }
         );
         this.$router.push("/login");
-        // console.log(response);
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
@@ -257,7 +256,6 @@ export default {
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("register method go");
       this.Register();
     },
     onReset() {

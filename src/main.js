@@ -92,9 +92,7 @@ const shared_data = {
     this.userId = userId;
     console.log("login", this.username);
     console.log(userId);
-    // console.log(this.$root.store);
-    // console.log(this.$root.store.store_state);
-    // console.log(this.userFavorites);
+
   },
   logout() {
     console.log("logout");

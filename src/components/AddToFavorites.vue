@@ -20,9 +20,9 @@ export default {
          {
             source: this.recipe.source,
             recipeId: this.recipe.id,
-         });
+         },{ withCredentials: true });
          const responsev = await this.axios.get(
-         this.$root.store.store_state.server_domain +`users/favoriterecipes/${this.$root.store.userId}`,);
+         this.$root.store.store_state.server_domain +`users/favoriterecipes/${this.$root.store.userId}`,{ withCredentials: true });
          this.data.userFavorites = responsev.data;
          this.$forceUpdate();
 
@@ -36,9 +36,9 @@ export default {
                user_id: this.$root.store.userId,
                recipeId: this.recipe.id,
             }
-         });
+         },{ withCredentials: true });
          const responsev = await this.axios.get(
-          this.$root.store.store_state.server_domain +`users/favoriterecipes/${this.$root.store.userId}`,
+          this.$root.store.store_state.server_domain +`users/favoriterecipes/${this.$root.store.userId}`,{ withCredentials: true }
          );
          this.data.userFavorites = responsev.data;
          this.$forceUpdate();

@@ -448,14 +448,13 @@ export default {
       if (this.$v.form.$anyError) {
         return;
       }
-      console.log("HUY");
       try {
         const form = new FormData();
         form.append("image", this.form.image, "stickers.jpg");
         const image = await this.axios.post(
           this.$root.store.store_state.server_domain + "users/createRecipe/uploadimage",
           form
-        );
+        ,{ withCredentials: true });
         let imageName = image.data.imagePath
         const response = await this.axios.post(
           this.$root.store.store_state.server_domain + "users/createrecipe",
@@ -475,7 +474,7 @@ export default {
             endpoint: this.$root.store.store_state.server_domain,
           }
           //Move to recipe page
-        );
+        ,{ withCredentials: true });
         this.Reset();
         let recipeId = response.data.recipeid;
         this.$router.push({

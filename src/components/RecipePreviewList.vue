@@ -64,7 +64,6 @@ export default {
   
   computed:{
     sortedArray() {
-      this.setWatched();
       if (this.sortBy == "time"){
         return [...this.recipes].sort((a, b) => a.Time - b.Time);
         }
@@ -77,14 +76,6 @@ export default {
   
   },
   methods: {
-    setWatched(){
-      this.recipes.forEach((recipe)=>{
-        if(recipe.isWatched==undefined || recipe.isWatched==false)
-        {recipe.isWatched = false;}
-        else
-        {recipe.isWatched = true;}
-      })
-    },
     addSourceToRecipe(recpie,source){
       recpie.source = source;
       return recpie;
@@ -95,8 +86,6 @@ export default {
           re.isFav = false;
           return re;
         }
-      console.log(recipe);
-      // console.log(recipe.id);
       let recpiesServer = this.data.userFavorites.Server;
       let recpiesApi = this.data.userFavorites.API;
       recpiesServer.forEach((element)=>{
@@ -117,7 +106,17 @@ export default {
       // re.isFav = false;
       return re;
     },
+    checkIfInVisited(visitedList,recipe){
+      let flag = false;
+      visitedList.forEach((elem)=>{
+        if (elem.recipe_id == recipe.id){
+          flag  = true;
+        }
+      });
+      return flag;
+    },
     async updateRecipes() {
+      let visited = await this.axios.get(this.$root.store.store_state.server_domain+"users/visitedRecipes?limit=-1",{ withCredentials: true });
       if(this.purpose == 'FAM')
       {
         try {
@@ -128,6 +127,7 @@ export default {
             recipes.data.forEach((elem) => {
               elem = this.addSourceToRecipe(elem,"Server");
               elem = this.checkIfInFav(elem);
+              elem.isVisited = this.checkIfInVisited(visited.data.visitedRecipes,elem);
               this.recipes.push(elem)
             });
           } catch (error) {
@@ -139,16 +139,16 @@ export default {
         
         try {
           const response = await this.axios.get(
-            this.$root.store.store_state.server_domain + this.endpoint,
-          );
+            this.$root.store.store_state.server_domain + this.endpoint
+          ,{ withCredentials: true });
 
           const recipes = response.data;
           this.recipes = [];
           recipes.forEach((elem) => {
             elem = this.addSourceToRecipe(elem,"API");
             elem = this.checkIfInFav(elem);
+            elem.isVisited = this.checkIfInVisited(visited.data.visitedRecipes,elem);
             this.recipes.push(elem)
-            elem.isWatched = false;
           });
          
           
@@ -165,10 +165,11 @@ export default {
             const element = serverIds[index];
             const response = await this.axios.get(
                                                     this.$root.store.store_state.server_domain + this.endpoint
-                                                    + `${element}?src=Server`,);
+                                                    + `${element}?src=Server`,{ withCredentials: true });
             let dataElement = response.data;
             dataElement.isFav = true;
             dataElement = this.addSourceToRecipe(dataElement,"Server");
+            dataElement.isVisited = this.checkIfInVisited(visited.data.visitedRecipes,dataElement);
             respoces.push(dataElement);
           }
 
@@ -176,10 +177,12 @@ export default {
             const element = apiIds[index];
             const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint
-            + `${element}?src=API`,);
+            + `${element}?src=API`,{ withCredentials: true });
             let dataElement = response.data;
             dataElement.isFav = true;
             dataElement = this.addSourceToRecipe(dataElement,"API");
+            dataElement.isVisited = this.checkIfInVisited(visited.data.visitedRecipes,dataElement);
+
             respoces.push(dataElement);
           }
           
@@ -192,17 +195,21 @@ export default {
       else if(this.purpose == 'LASTVISITED'){
         const response = await this.axios.get(
             this.$root.store.store_state.server_domain + this.endpoint
-            + "?limit=3",);
+            + "?limit=3",{ withCredentials: true });
         let lists  = response.data.visitedRecipes
         let responseses  = []
         lists.API.forEach((elem) => {
               elem = this.addSourceToRecipe(elem,"API");
               elem = this.checkIfInFav(elem);
+              elem.isVisited = this.checkIfInVisited(visited.data.visitedRecipes,elem);
+
               responseses.push(elem)
         });
         lists.Server.forEach((elem) => {
               elem = this.addSourceToRecipe(elem,"Server");
               elem = this.checkIfInFav(elem);
+              elem.isVisited = this.checkIfInVisited(visited.data.visitedRecipes,elem);
+
               responseses.push(elem)
         })
         this.recipes = responseses;

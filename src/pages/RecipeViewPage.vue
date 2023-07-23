@@ -88,7 +88,6 @@ export default {
   },
   async created() {
     try {
-      console.log("hello from page ")
       let response;
       // response = this.$route.params.response;
       if (localStorage.getItem('username')){
@@ -97,19 +96,18 @@ export default {
           {
               recipeId:this.$route.params.recipeId,
               source:this.$route.params.src
-          });
-        console.log(r.data);
+          },{ withCredentials: true });
       }
       try {
         response = await this.axios.get(
           this.$root.store.store_state.server_domain+ this.endpoint + 
           `${this.$route.params.recipeId}`+`?src=${this.$route.params.src}`
           
-        );
+        ,{ withCredentials: true });
         let _recipe = response.data
         this.recipe = _recipe;
 
-        // console.log("response.status", response.status);
+        console.log("response.status", response.status);
         if (response.status !== 200) 
           this.$router.replace("/NotFound");
       } catch (error) {

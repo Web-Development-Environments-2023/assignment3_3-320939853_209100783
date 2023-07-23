@@ -111,26 +111,23 @@ export default {
 
         );
         // this.$root.loggedIn = true;
-        console.log("heyyyyyyyyyyyyy"+response.session);
         this.$root.store.login(this.form.username,response.data.session.user_id);
         let response2 = await this.getUserFavorites(response.data.session.user_id);
         //Assignment
         this.data.userFavorites = response2.data; 
         //Stringing
-        this.$router.push("/");
+        // this.$router.push("/");
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
       }
     },
     onLogin() {
-      console.log("login method called");
       this.form.submitError = undefined;
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      console.log("login method go");
 
       this.Login();
     }

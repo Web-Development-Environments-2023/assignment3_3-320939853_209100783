@@ -16,7 +16,6 @@ const actions = {
     //     state.server_domain +`user/favoriterecipes/${userId}`,
         
     // );
-    console.log("sdasdsdasdsadasdasdsada");
     return 1;
    },
 
