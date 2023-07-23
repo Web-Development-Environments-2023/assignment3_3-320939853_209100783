@@ -38,7 +38,7 @@
 
       <b-button
         type="submit"
-        variant="primary"
+        variant="success"
         style="width:100px;display:block;"
         class="mx-auto w-100"
         >Login</b-button

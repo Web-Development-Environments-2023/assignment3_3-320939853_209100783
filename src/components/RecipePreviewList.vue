@@ -2,6 +2,9 @@
   <b-container>
     <h3>
       {{ title }}:
+      <b-button variant="info"
+        @click="updateRecipes"
+        v-if="purpose === 'RANDOM'">Refresh Random Recipes</b-button>
       <slot></slot>
     </h3>
     <b-card-group deck class="deck" :key="getRecipesLen">
@@ -19,11 +22,6 @@
           </b-card>
         </div>
     </b-card-group>
-    <b-button variant="outline-primary"
-        style="width:100px;"
-        class="mx-auto w-100"
-        @click="updateRecipes"
-        v-if="purpose === 'RANDOM'">Refresh Random Recipes</b-button>
   </b-container>
 </template>
 
