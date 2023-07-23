@@ -1,6 +1,5 @@
 <template>
    <div id="favorites">
-      <h1>Hello Favorites</h1>
       <RecipePreviewList
          id="favoritesList" 
          title="Favorites Recipes" 

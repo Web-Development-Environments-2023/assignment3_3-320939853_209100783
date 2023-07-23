@@ -2,7 +2,7 @@
   <div id="lastvisited">
    <RecipeViewList
       id="LastVisited" 
-      title="LastVisited" 
+      title="Last Visited" 
       :endpoint="endpoint"
       purpose="LASTVISITED"
       :data="data"

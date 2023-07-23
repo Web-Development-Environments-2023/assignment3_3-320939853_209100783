@@ -1,6 +1,5 @@
 <template>
     <div id="family">
-       <h1>Welcome to Family Recipes</h1>
        <RecipePreviewList
           id="FamilyList" 
           title="Family Recipes" 

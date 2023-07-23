@@ -4,50 +4,38 @@
       toggleable="lg"
       type="dark"
       variant="info"
-      class="bg-dark font-weight-bold"
+      class="bg-light font-weight-bold"
     >
-      <b-navbar-brand tag="h1" class="mx-4 my-auto">
-        <router-link :to="{ name: 'main' }">Home</router-link>
-      </b-navbar-brand>
+      <b-navbar-nav class="mx-4 my-auto">
+        <b-nav-text><router-link :to="{ name: 'main' } "  class="text-dark">Home</router-link></b-nav-text>
+      </b-navbar-nav>
 
       <b-navbar-nav class="mx-4 my-auto">
         <b-nav-text>
-          <router-link :to="{ name: 'search' }" class="text-success"
+          <router-link :to="{ name: 'search' }" class="text-dark"
             >Search</router-link
           >
         </b-nav-text>
       </b-navbar-nav>
 
-      <b-collapse v-if="!$root.store.username" is-nav>
-        <b-navbar-nav class="ml-auto my-auto mr-4">
-          <b-nav-text> Guest </b-nav-text>
-        </b-navbar-nav>
+      <b-navbar-nav class="mx-4 my-auto">
+        <b-nav-text>
+          <router-link :to="{ name: 'about' }" class="text-dark"
+            >About</router-link
+          >
+        </b-nav-text>
+      </b-navbar-nav>
 
-        <b-navbar-nav class="mx-4 my-auto">
+       <b-navbar-nav v-if="$root.store.username" class="mx-4 my-auto">
           <b-nav-text>
-            <router-link :to="{ name: 'register' }" class="text-success"
-              >Register</router-link
+            <router-link :to="{ name: 'favorites' }" class="text-dark"
+              >Favorites</router-link
             >
           </b-nav-text>
         </b-navbar-nav>
 
-        <b-navbar-nav class="mx-4 my-auto">
-          <b-nav-text>
-            <router-link :to="{ name: 'login' }" class="text-success"
-              >Login</router-link
-            >
-          </b-nav-text>
-        </b-navbar-nav>
-      </b-collapse>
-
-      <b-collapse v-else is-nav>
-        <b-navbar-nav class="ml-auto my-auto">
-          <b-nav-text class="text-success">
-            Hello {{ $root.store.username }}
-          </b-nav-text>
-        </b-navbar-nav>
-        <b-navbar-nav>
-          <b-button @click="openModal">New Recipe</b-button>
+        <b-navbar-nav v-if="$root.store.username"> 
+          <b-button variant ="success" @click="openModal">New Recipe</b-button>
           <b-modal
             id="RecipeModal"
             ok-only
@@ -278,17 +266,40 @@
           </b-modal>
         </b-navbar-nav>
 
+      <b-collapse v-if="!$root.store.username" is-nav>
+        <b-navbar-nav class="ml-auto my-auto mr-4 dark">
+          <b-nav-text class="text-dark">Hello Guest</b-nav-text>
+        </b-navbar-nav>
+
         <b-navbar-nav class="mx-4 my-auto">
+          <b-button variant="success" @click="Register">Register</b-button>
+        </b-navbar-nav>
+
+
+
+        <b-navbar-nav class="mx-4 my-auto">
+          <b-button variant="success" @click="login">Login</b-button>
+        </b-navbar-nav>
+
+        <!-- <b-navbar-nav class="mx-4 my-auto">
           <b-nav-text>
-            <router-link :to="{ name: 'favorites' }" class="text-success"
-              >Favorites</router-link
+            <router-link :to="{ name: 'login' }" class="text-success"
+              >Login</router-link
             >
+          </b-nav-text>
+        </b-navbar-nav> -->
+      </b-collapse>
+
+      <b-collapse v-else is-nav>
+        <b-navbar-nav class="ml-auto my-auto">
+          <b-nav-text class="text-dark">
+            Hello {{ $root.store.username }}
           </b-nav-text>
         </b-navbar-nav>
 
         <b-navbar-nav class="mx-4 my-auto">
           <b-nav-text>
-            <b-button variant="success" @click="Logout">Logout</b-button>
+            <b-button variant="danger" @click="Logout">Logout</b-button>
           </b-nav-text>
         </b-navbar-nav>
 
@@ -387,6 +398,12 @@ export default {
     },
   },
   methods: {
+    Register(){
+      this.$router.push({ name: 'register' });
+    },
+    login(){
+      this.$router.push({ name: 'login' });
+    },
     validateState(param) {
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;

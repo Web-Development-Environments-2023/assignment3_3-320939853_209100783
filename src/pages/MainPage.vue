@@ -11,7 +11,7 @@
         ></RecipePreviewList>
       </div>
     </div>
-    <div class="right-column">
+    <div class="right-column" style="display: flex; justify-content: center; align-items: center;">
       <div v-if="!$root.store.username">
         <LoginPage :data="data"></LoginPage>
       </div>

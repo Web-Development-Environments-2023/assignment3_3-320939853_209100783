@@ -1,19 +1,51 @@
 <template>
   <div class="container">
     <div v-if="recipe">
-      <!-- <div class="recipe-header mt-3 mb-4"> -->
         <b-container  class="imageContainer">
           <b-card>
             <b-card-header class="centeritem" >
-              {{ recipe.name }}
+              <h1>{{ recipe.name }}</h1>
             </b-card-header>
             <b-card-img :src="recipe.image" class="center" img-alt="Card image" ></b-card-img>
             <b-card-footer class="centeritem">
-              Ready in {{ recipe.Time }} minutes
+              Ready in {{ recipe.Time }} minutes<br>
+              <ul class="list-unstyled">
+
+              <li v-if="recipe.portions">{{ recipe.portions }} Portions</li>
+              <li v-else>Unknown Portions</li>
+
+              <li v-if="recipe.Likes">Likes : {{ recipe.Likes }}</li>
+              <li v-else>Unknown Likes</li>
+              
+              <li v-if="recipe.isVegan" class="list-item-with-image">
+                <img src="../assets/Veg-logo.png" alt="Image" style="width: 30px; height: 30px;">
+                Vegan
+              </li>
+              <li v-else class="list-item-with-image">
+                <img src="../assets/non-Vegan-logo.png" alt="Image" style="width: 30px; height: 30px;"> Not Vegan
+              </li>
+
+              <li v-if="recipe.isVeget" class="list-item-with-image">
+                <img src="../assets/veget-logo.png" alt="Image" style="width: 30px; height: 30px;">
+                Veget
+              </li>
+              <li v-else class="list-item-with-image">
+                <img src="../assets/non-veget-logo.png" alt="Image" style="width: 30px; height: 30px;">
+                Not Veget
+              </li>
+
+              <li v-if="recipe.isGfree" class="list-item-with-image">
+                <img src="../assets/G-FREE.jpg" alt="Image" style="width: 30px; height: 30px;">
+                Gluten free
+              </li>
+              <li v-else class="list-item-with-image">
+                <img src="../assets/NON-G-FREE.jpg" alt="Image" style="width: 30px; height: 30px;">
+                Not-Gluten free
+              </li>
+            </ul>
             </b-card-footer>
           </b-card>
         </b-container>
-      <!-- </div> -->
       <div class="recipe-body">
         <div class="wrapper">
           <b-card class="wrapped">

@@ -1,6 +1,5 @@
 <template>
     <div id="personal">
-       <h1>Welcome to Personal Recipes</h1>
        <RecipePreviewList
           id="PersonalList" 
           title="Personal Recipes" 

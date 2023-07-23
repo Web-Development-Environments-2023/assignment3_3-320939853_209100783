@@ -2,6 +2,9 @@
   <b-container>
     <h3>
       {{ title }}:
+      <b-button variant="info"
+        @click="updateRecipes"
+        v-if="purpose === 'RANDOM'">Refresh Random Recipes</b-button>
       <slot></slot>
     </h3>
     <b-card-group deck class="deck" :key="getRecipesLen">
@@ -19,11 +22,6 @@
           </b-card>
         </div>
     </b-card-group>
-    <b-button variant="outline-primary"
-        style="width:100px;"
-        class="mx-auto w-100"
-        @click="updateRecipes"
-        v-if="purpose === 'RANDOM'">Refresh Random Recipes</b-button>
   </b-container>
 </template>
 
@@ -66,7 +64,7 @@ export default {
   
   computed:{
     sortedArray() {
-      
+      this.setWatched();
       if (this.sortBy == "time"){
         return [...this.recipes].sort((a, b) => a.Time - b.Time);
         }
@@ -79,6 +77,14 @@ export default {
   
   },
   methods: {
+    setWatched(){
+      this.recipes.forEach((recipe)=>{
+        if(recipe.isWatched==undefined || recipe.isWatched==false)
+        {recipe.isWatched = false;}
+        else
+        {recipe.isWatched = true;}
+      })
+    },
     addSourceToRecipe(recpie,source){
       recpie.source = source;
       return recpie;
@@ -142,6 +148,7 @@ export default {
             elem = this.addSourceToRecipe(elem,"API");
             elem = this.checkIfInFav(elem);
             this.recipes.push(elem)
+            elem.isWatched = false;
           });
          
           
