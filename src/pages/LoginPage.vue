@@ -95,7 +95,7 @@ export default {
     },
     async getUserFavorites(userId){
       const response = await this.axios.get(
-          this.$root.store.store_state.server_domain +`users/favoriterecipes/${userId}`,
+          this.$root.store.store_state.server_domain +`users/favoriterecipes/${userId}`,{ withCredentials: true }
       );
       return response;
     },
@@ -103,14 +103,15 @@ export default {
       try {
         const response = await this.axios.post(
           this.$root.store.store_state.server_domain +"auth/Login",
+          
           {
             username: this.form.username,
-            password: this.form.password
-          },
+            password: this.form.password,
+          },{ withCredentials: true }
 
         );
         // this.$root.loggedIn = true;
-        console.log(response);
+        console.log("heyyyyyyyyyyyyy"+response.session);
         this.$root.store.login(this.form.username,response.data.session.user_id);
         let response2 = await this.getUserFavorites(response.data.session.user_id);
         //Assignment

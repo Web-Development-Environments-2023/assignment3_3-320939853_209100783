@@ -4,7 +4,7 @@ module.exports = {
   },
   devServer: {
     // host: "132.73.84.119"
-    host: "eitag-tseytlin.cs.bgu.ac.il"
+    host: "localhost"
   }
   // publicPath: process.env.NODE_ENV === "production" ? "/LAB12/" : "/"
 };
