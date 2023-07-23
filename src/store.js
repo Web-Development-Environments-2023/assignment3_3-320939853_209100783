@@ -1,8 +1,8 @@
 const state = {
 
-    server_domain: "http://localhost:3000/",
+    // server_domain: "http://localhost:3000/",
     temp:"",
-    // server_domain: "https://eitag-tseytlin.cs.bgu.ac.il/",
+    server_domain: "https://eitag-tseytlin.cs.bgu.ac.il/",
     // server_domain: "https://132.73.84.119/",
 
     
