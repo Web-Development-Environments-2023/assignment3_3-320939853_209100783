@@ -3,8 +3,8 @@ module.exports = {
     devtool: "source-map"
   },
   devServer: {
-    // host: "132.72.65.211"
-    host: "localhost"
+    // host: "132.73.84.119"
+    host: "eitag-tseytlin.cs.bgu.ac.il"
   }
   // publicPath: process.env.NODE_ENV === "production" ? "/LAB12/" : "/"
 };

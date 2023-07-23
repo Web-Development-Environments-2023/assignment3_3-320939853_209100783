@@ -1,4 +1,4 @@
-export default [
+export const countriess = createObjectsFromArray([
   "Afghanistan",
   "Åland Islands",
   "Albania",
@@ -249,4 +249,72 @@ export default [
   "Yemen",
   "Zambia",
   "Zimbabwe"
-];
+]);
+export const couisine = createObjectsFromArray(["African",
+  "Asian",
+  "American",
+  "British",
+  "Cajun",
+  "Caribbean",
+  "Chinese",
+  "Eastern", "European",
+  "European",
+  "French",
+  "German",
+  "Greek",
+  "Indian",
+  "Irish",
+  "Italian",
+  "Japanese",
+  "Jewish",
+  "Korean",
+  "Latin", "American",
+  "Mediterranean",
+  "Mexican",
+  "Middle", "Eastern",
+  "Nordic",
+  "Southern",
+  "Spanish",
+  "Thai",
+  "Vietnamese",]);
+
+export const diet = createObjectsFromArray([
+  "Gluten Free",
+  "Ketogenic",
+  "Vegetarian",
+  "Lacto-Vegetarian",
+  "Ovo-Vegetarian",
+  "Vegan",
+  "Pescetarian",
+  "Paleo",
+  "Primal",
+  "Low FODMAP",
+  "Whole30",
+]);
+export const intolerances = createObjectsFromArray([
+"Dairy",
+"Egg",
+"Gluten",
+"Grain",
+"Peanut",
+"Seafood",
+"Sesame",
+"Shellfish",
+"Soy",
+"Sulfite",
+"Tree", "Nut",
+"Wheat",
+])
+function createObjectsFromArray(arr) {
+  var result = [];
+
+  for (var i = 0; i < arr.length; i++) {
+     var obj = {
+        text: arr[i],
+        value: arr[i]
+     };
+     result.push(obj);
+  }
+
+  return result;
+}

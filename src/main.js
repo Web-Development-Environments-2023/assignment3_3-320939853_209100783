@@ -2,7 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import VueAxios from "vue-axios";
 import axios from "axios";
-
+import { state as store_state ,actions as store_actions} from "./store";
 import routes from "./routes";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -10,10 +10,15 @@ const router = new VueRouter({
   routes,
 });
 
+
+console.log(Vue.prototype.$store)
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 import {
+  FormFilePlugin ,
+  ImagePlugin ,
+  ListGroupPlugin ,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,
@@ -24,8 +29,13 @@ import {
   AlertPlugin,
   ToastPlugin,
   LayoutPlugin,
+  FormRadioPlugin ,
 } from "bootstrap-vue";
 [
+  FormFilePlugin ,
+  ImagePlugin ,
+  ListGroupPlugin ,
+  FormRadioPlugin ,
   FormGroupPlugin,
   FormPlugin,
   FormInputPlugin,
@@ -42,6 +52,7 @@ Vue.use(Vuelidate);
 axios.interceptors.request.use(
   function(config) {
     // Do something before request is sent
+    config.withCredentials=true;
     return config;
   },
   function(error) {
@@ -67,19 +78,31 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
+  server_domain:"https://eitag-tseytlin.cs.bgu.ac.il",
+  store_state: store_state,
+  store_actions: store_actions,
   username: localStorage.username,
-  login(username) {
+  userId:localStorage.userId,
+  login(username,userId) {
     localStorage.setItem("username", username);
+    localStorage.setItem("userId", userId);
     this.username = username;
+    this.userId = userId;
     console.log("login", this.username);
+    console.log(userId);
+    // console.log(this.$root.store);
+    // console.log(this.$root.store.store_state);
+    // console.log(this.userFavorites);
   },
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
+    sessionStorage.removeItem('lastSearch');
     this.username = undefined;
+    localStorage.removeItem('userId');
   },
+  
 };
-console.log(shared_data);
 // Vue.prototype.$root.store = shared_data;
 
 new Vue({

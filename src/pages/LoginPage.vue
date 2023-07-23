@@ -38,7 +38,7 @@
 
       <b-button
         type="submit"
-        variant="primary"
+        variant="success"
         style="width:100px;display:block;"
         class="mx-auto w-100"
         >Login</b-button
@@ -73,7 +73,7 @@ export default {
         username: "",
         password: "",
         submitError: undefined
-      }
+      },
     };
   },
   validations: {
@@ -88,27 +88,34 @@ export default {
   },
   methods: {
     validateState(param) {
+      
       const { $dirty, $error } = this.$v.form[param];
       return $dirty ? !$error : null;
+      // return true;
+    },
+    async getUserFavorites(userId){
+      const response = await this.axios.get(
+          this.$root.store.store_state.server_domain +`users/favoriterecipes/${userId}`,
+      );
+      return response;
     },
     async Login() {
       try {
-        
         const response = await this.axios.post(
-          // "https://test-for-3-2.herokuapp.com/user/Login",
-          this.$root.store.server_domain +"/Login",
-          // "http://132.72.65.211:80/Login",
-          // "http://132.73.84.100:80/Login",
-
+          this.$root.store.store_state.server_domain +"auth/Login",
           {
             username: this.form.username,
             password: this.form.password
-          }
+          },
+
         );
-        // console.log(response);
         // this.$root.loggedIn = true;
-        console.log(this.$root.store.login);
-        this.$root.store.login(this.form.username);
+        console.log(response);
+        this.$root.store.login(this.form.username,response.data.session.user_id);
+        let response2 = await this.getUserFavorites(response.data.session.user_id);
+        //Assignment
+        this.data.userFavorites = response2.data; 
+        //Stringing
         this.$router.push("/");
       } catch (err) {
         console.log(err.response);
@@ -116,16 +123,25 @@ export default {
       }
     },
     onLogin() {
-      // console.log("login method called");
+      console.log("login method called");
       this.form.submitError = undefined;
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("login method go");
+      console.log("login method go");
 
       this.Login();
     }
+  },
+  // created() {
+  //   await
+  // },
+  props:{
+    data: {
+      type: Object,
+      required: true
+    },
   }
 };
 </script>
@@ -134,3 +150,4 @@ export default {
   max-width: 400px;
 }
 </style>
+
